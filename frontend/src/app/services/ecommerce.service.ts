@@ -28,4 +28,8 @@ export class EcommerceService {
     getProductsByCategory(categoryId: number): Observable<Product[]> {
         return this.http.get<Product[]>(`${this.apiUrl}/products/category/${categoryId}`);
     }
+
+    createOrder(orderData: { items: { productId: number; quantity: number }[] }): Observable<number> {
+        return this.http.post<number>(`${this.apiUrl}/orders`, orderData);
+    }
 }

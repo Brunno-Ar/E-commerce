@@ -1,2 +1,9 @@
-<app-product-list></app-product-list>
+<mat-toolbar color="primary">
+    <span routerLink="/" style="cursor: pointer;">My Store</span>
+    <span class="spacer"></span>
+    <button mat-icon-button routerLink="/checkout">
+        <mat-icon [matBadge]="cartCount$ | async" matBadgeColor="warn"
+            [matBadgeHidden]="(cartCount$ | async) === 0">shopping_cart</mat-icon>
+    </button>
+</mat-toolbar>
 <router-outlet></router-outlet>
