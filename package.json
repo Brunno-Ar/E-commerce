@@ -1,0 +1,15 @@
+{
+    "name": "ecommerce-monorepo",
+    "version": "1.0.0",
+    "description": "Monorepo for Spring Boot Backend and Angular Frontend",
+    "scripts": {
+        "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+        "start:backend": "cd backend && ./mvnw spring-boot:run",
+        "start:frontend": "cd frontend && npm start",
+        "install:all": "npm install && cd frontend && npm install && cd ../backend && ./mvnw install -DskipTests",
+        "build": "echo 'Build script placeholder for Vercel/Production'"
+    },
+    "dependencies": {
+        "concurrently": "^9.1.2"
+    }
+}

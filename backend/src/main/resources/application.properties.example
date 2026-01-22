@@ -1,0 +1,18 @@
+spring.application.name=backend
+
+# --- Configuração do Banco (Neon) ---
+# A URL deve se parecer com: jdbc:postgresql://ep-nome-xyz.aws.neon.tech/neondb?sslmode=require
+spring.datasource.url=[URL_DO_BANCO]
+spring.datasource.username=[USUARIO]
+spring.datasource.password=[SENHA]
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# --- Configuração JPA / Hibernate ---
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# --- Configuração Spring Security ---
+spring.security.user.name=admin
+# spring.security.user.password=admin123

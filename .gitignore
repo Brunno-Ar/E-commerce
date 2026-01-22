@@ -1,0 +1,49 @@
+# Root .gitignore
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+dist/
+build/
+out/
+
+# Misc
+.DS_Store
+*.log
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# Java / Spring Boot (Backend)
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/**/target/
+backend/help.md
+
+# Secrets protection
+backend/src/main/resources/application.properties
+
+# Angular (Frontend)
+frontend/.angular/
+frontend/dist/
+frontend/node_modules/
+frontend/out-tsc/
+frontend/.sass-cache/
+frontend/connect.lock
+frontend/coverage/
+frontend/lib/
+frontend/test-report.xml
+frontend/report.xml
