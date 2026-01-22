@@ -48,4 +48,5 @@ frontend/lib/
 frontend/test-report.xml
 frontend/report.xml
 
+# Agents
 .agent/
