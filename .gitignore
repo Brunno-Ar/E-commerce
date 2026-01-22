@@ -47,3 +47,5 @@ frontend/coverage/
 frontend/lib/
 frontend/test-report.xml
 frontend/report.xml
+
+.agent/

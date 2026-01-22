@@ -1,0 +1,33 @@
+services:
+  # Servico do Backend (Spring Boot + Docker)
+  - type: web
+    name: backend-api
+    runtime: docker
+    repo: https://github.com/Brunno-Ar/E-commerce.git
+    rootDir: backend
+    plan: free
+    branch: main
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false # Voce precisa preencher isso manualmente no Dashboard do Render
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false # Voce precisa preencher isso manualmente no Dashboard do Render
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false # Voce precisa preencher isso manualmente no Dashboard do Render
+    healthCheckPath: /api/products
+
+  # Servico do Frontend (Site Estatico)
+  - type: static
+    name: frontend-loja
+    repo: https://github.com/Brunno-Ar/E-commerce.git
+    rootDir: frontend
+    branch: main
+    buildCommand: npm install && npx ng build
+    publishDir: dist/frontend/browser
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0 # Garante a versao correta do Node para o Angular 17+

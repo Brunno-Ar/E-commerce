@@ -4,11 +4,13 @@ import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { Category } from '../models/category.model';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
     providedIn: 'root'
 })
 export class EcommerceService {
-    private apiUrl = 'http://localhost:8080/api';
+    private apiUrl = environment.apiUrl;
     private http = inject(HttpClient);
 
     getProducts(): Observable<Product[]> {
