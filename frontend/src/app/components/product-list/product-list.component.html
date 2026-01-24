@@ -1,0 +1,56 @@
+<app-hero></app-hero>
+<div class="container">
+
+    <div class="controls-wrapper">
+        <!-- Search Bar -->
+        <div class="search-container">
+            <mat-form-field appearance="outline" class="custom-search-field">
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput [formControl]="searchControl" placeholder="Find your gear...">
+            </mat-form-field>
+        </div>
+
+        <!-- Categories -->
+        <div class="filter-section">
+            <mat-chip-set class="custom-chips">
+                <mat-chip-option [selected]="selectedCategoryId === undefined" (click)="setCategory(undefined)">
+                    All Gear
+                </mat-chip-option>
+
+                <mat-chip-option *ngFor="let cat of categories$ | async" [selected]="selectedCategoryId === cat.id"
+                    (click)="setCategory(cat.id)">
+                    {{ cat.name }}
+                </mat-chip-option>
+            </mat-chip-set>
+        </div>
+    </div>
+
+    <div class="product-grid">
+        <mat-card *ngFor="let product of products$ | async" class="product-card">
+            <div class="card-image-wrapper">
+                <span class="badge">NEW</span>
+                <img mat-card-image [src]="product.imageUrl" [alt]="product.name">
+            </div>
+
+            <mat-card-content>
+                <mat-card-title>{{ product.name }}</mat-card-title>
+                <p class="description">{{ product.description }}</p>
+
+                <div class="card-footer">
+                    <span class="price-tag">{{ product.price | currency:'BRL' }}</span>
+
+                    <button *ngIf="!product.isAffiliate" mat-icon-button color="primary" class="add-btn"
+                        (click)="addToCart(product)">
+                        <mat-icon>shopping_cart</mat-icon>
+                    </button>
+
+                    <button *ngIf="product.isAffiliate" mat-flat-button color="accent" class="add-btn affiliate-btn"
+                        (click)="openAffiliateLink(product.affiliateUrl)">
+                        <mat-icon>open_in_new</mat-icon>
+                        <span class="btn-label">Ver na Loja</span>
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

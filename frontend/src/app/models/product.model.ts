@@ -5,4 +5,6 @@ export interface Product {
     price: number;
     imageUrl: string;
     categoryId?: number;
+    isAffiliate?: boolean;
+    affiliateUrl?: string;
 }

@@ -3,65 +3,75 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { debounceTime, startWith, switchMap } from 'rxjs/operators';
+
 import { Product } from '../../models/product.model';
 import { EcommerceService } from '../../services/ecommerce.service';
+import { CartService } from '../../services/cart.service';
+import { HeroComponent } from '../hero/hero.component';
 
 @Component({
-  selector: 'app-product-list',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatGridListModule],
-  template: `
-    <div class="container">
-      <h2>Nossos Produtos</h2>
-      <div class="product-grid">
-        <mat-card *ngFor="let product of products$ | async" class="product-card">
-          <img mat-card-image [src]="product.imageUrl" [alt]="product.name">
-          <mat-card-header>
-            <mat-card-title>{{ product.name }}</mat-card-title>
-            <mat-card-subtitle>{{ product.price | currency:'BRL' }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ product.description }}</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button color="primary">ADICIONAR AO CARRINHO</button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .container {
-      padding: 20px;
-    }
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .product-card {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-radius: 8px; /* Slightly rounded for modern feel */
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow */
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    }
-    img[mat-card-image] {
-      height: 200px;
-      object-fit: cover;
-    }
-    mat-card-content {
-      margin-top: 10px;
-    }
-  `]
+    selector: 'app-product-list',
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        MatGridListModule,
+        MatChipsModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        HeroComponent
+    ],
+    templateUrl: './product-list.component.html',
+    styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent {
-  private ecommerceService = inject(EcommerceService);
-  products$ = this.ecommerceService.getProducts();
+    private ecommerceService = inject(EcommerceService);
+    private cartService = inject(CartService);
+
+    // Filters
+    searchControl = new FormControl('');
+    private categorySubject = new BehaviorSubject<number | undefined>(undefined);
+
+    // Data streams
+    categories$ = this.ecommerceService.getCategories();
+
+    products$ = combineLatest([
+        this.categorySubject,
+        this.searchControl.valueChanges.pipe(
+            startWith(''),
+            debounceTime(500)
+        )
+    ]).pipe(
+        switchMap(([categoryId, search]) =>
+            this.ecommerceService.getProducts(categoryId, search || '')
+        )
+    );
+
+    get selectedCategoryId(): number | undefined {
+        return this.categorySubject.value;
+    }
+
+    setCategory(categoryId?: number) {
+        this.categorySubject.next(categoryId);
+    }
+
+    addToCart(product: Product) {
+        this.cartService.addToCart(product);
+    }
+
+    openAffiliateLink(url?: string) {
+        if (url) {
+            window.open(url, '_blank');
+        }
+    }
 }
