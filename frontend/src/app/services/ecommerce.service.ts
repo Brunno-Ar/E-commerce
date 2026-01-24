@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { Category } from '../models/category.model';
@@ -13,8 +13,15 @@ export class EcommerceService {
     private apiUrl = environment.apiUrl;
     private http = inject(HttpClient);
 
-    getProducts(): Observable<Product[]> {
-        return this.http.get<Product[]>(`${this.apiUrl}/products`);
+    getProducts(categoryId?: number, search?: string): Observable<Product[]> {
+        let params = new HttpParams();
+        if (categoryId) {
+            params = params.set('categoryId', categoryId);
+        }
+        if (search) {
+            params = params.set('query', search);
+        }
+        return this.http.get<Product[]>(`${this.apiUrl}/products`, { params });
     }
 
     getProductById(id: number): Observable<Product> {

@@ -1,5 +1,5 @@
-<mat-toolbar color="primary">
-    <span routerLink="/" style="cursor: pointer;">My Store</span>
+<mat-toolbar class="main-toolbar">
+    <span routerLink="/" class="logo">My Store</span>
     <span class="spacer"></span>
     <button mat-icon-button routerLink="/checkout">
         <mat-icon [matBadge]="cartCount$ | async" matBadgeColor="warn"
