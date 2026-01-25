@@ -1,0 +1,109 @@
+<div class="products-container">
+    <!-- Header -->
+    <div class="products-header">
+        <div class="header-info">
+            <h1>Produtos</h1>
+            <p>Gerencie o catálogo de produtos da sua loja</p>
+        </div>
+        <button class="new-product-btn" (click)="navigateToNew()">
+            <mat-icon>add</mat-icon>
+            Novo Produto
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="loading-container">
+        <mat-spinner diameter="48"></mat-spinner>
+        <p>Carregando produtos...</p>
+    </div>
+    } @else {
+    <!-- Products Summary -->
+    <div class="products-summary">
+        <div class="summary-item">
+            <mat-icon>inventory_2</mat-icon>
+            <span>{{ products().length }} produtos cadastrados</span>
+        </div>
+    </div>
+
+    <!-- Products Table -->
+    @if (products().length === 0) {
+    <div class="empty-state">
+        <mat-icon>inventory_2</mat-icon>
+        <h3>Nenhum produto cadastrado</h3>
+        <p>Comece adicionando seu primeiro produto ao catálogo</p>
+        <button class="add-first-btn" (click)="navigateToNew()">
+            <mat-icon>add</mat-icon>
+            Adicionar Primeiro Produto
+        </button>
+    </div>
+    } @else {
+    <div class="table-card">
+        <div class="table-container">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th class="th-image">Imagem</th>
+                        <th class="th-name">Nome</th>
+                        <th class="th-price">Preço</th>
+                        <th class="th-type">Tipo</th>
+                        <th class="th-category">Categoria</th>
+                        <th class="th-actions">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (product of products(); track product.id) {
+                    <tr [class.deleting]="deletingId() === product.id">
+                        <td class="td-image">
+                            <div class="product-image">
+                                @if (product.imageUrl) {
+                                <img [src]="product.imageUrl" [alt]="product.name" />
+                                } @else {
+                                <mat-icon>image</mat-icon>
+                                }
+                            </div>
+                        </td>
+                        <td class="td-name">
+                            <div class="product-name-cell">
+                                <span class="product-name">{{ product.name }}</span>
+                                @if (product.description) {
+                                <span class="product-desc">{{ product.description | slice:0:50 }}...</span>
+                                }
+                            </div>
+                        </td>
+                        <td class="td-price">
+                            <span class="price-value">{{ product.price | currency:'BRL' }}</span>
+                        </td>
+                        <td class="td-type">
+                            <span class="type-badge" [class]="getProductTypeClass(product)">
+                                <mat-icon>{{ product.isAffiliate ? 'link' : 'store' }}</mat-icon>
+                                {{ getProductType(product) }}
+                            </span>
+                        </td>
+                        <td class="td-category">
+                            <span class="category-name">{{ product.category?.name || 'Sem categoria' }}</span>
+                        </td>
+                        <td class="td-actions">
+                            <div class="action-buttons">
+                                <button class="action-btn edit" title="Editar produto" (click)="editProduct(product)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button class="action-btn delete" title="Excluir produto"
+                                    [disabled]="deletingId() === product.id" (click)="deleteProduct(product)">
+                                    @if (deletingId() === product.id) {
+                                    <mat-spinner diameter="16"></mat-spinner>
+                                    } @else {
+                                    <mat-icon>delete</mat-icon>
+                                    }
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    }
+    }
+</div>

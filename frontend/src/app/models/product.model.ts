@@ -1,3 +1,5 @@
+import { Category } from './category.model';
+
 export interface Product {
     id: number;
     name: string;
@@ -5,6 +7,7 @@ export interface Product {
     price: number;
     imageUrl: string;
     categoryId?: number;
+    category?: Category;
     isAffiliate?: boolean;
     affiliateUrl?: string;
 }

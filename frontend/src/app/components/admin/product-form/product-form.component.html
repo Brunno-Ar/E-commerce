@@ -1,0 +1,75 @@
+<div class="admin-container fade-in">
+    <mat-card class="product-card">
+        <div class="card-header">
+            <h2>{{ isEditMode ? 'Editar Produto' : 'Novo Produto' }}</h2>
+            <button mat-icon-button (click)="onCancel()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+
+            <!-- Name -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nome do Produto</mat-label>
+                <input matInput formControlName="name" placeholder="Ex: Sony WH-1000XM5">
+                <mat-error *ngIf="productForm.get('name')?.hasError('required')">
+                    Nome é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Description -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descrição</mat-label>
+                <textarea matInput formControlName="description" rows="4"
+                    placeholder="Detalhes do produto..."></textarea>
+                <mat-error *ngIf="productForm.get('description')?.hasError('required')">
+                    Descrição é obrigatória
+                </mat-error>
+            </mat-form-field>
+
+            <div class="row">
+                <!-- Price -->
+                <mat-form-field appearance="outline" class="half-width">
+                    <mat-label>Preço (R$)</mat-label>
+                    <input matInput type="number" formControlName="price">
+                    <mat-error *ngIf="productForm.get('price')?.hasError('min')">
+                        Preço deve ser positivo
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Image URL -->
+                <mat-form-field appearance="outline" class="half-width">
+                    <mat-label>URL da Imagem</mat-label>
+                    <input matInput formControlName="imageUrl" placeholder="https://...">
+                </mat-form-field>
+            </div>
+
+            <!-- Affiliate Toggle -->
+            <div class="affiliate-section">
+                <mat-slide-toggle formControlName="isAffiliate" color="accent">
+                    Produto de Afiliado?
+                </mat-slide-toggle>
+            </div>
+
+            <!-- Affiliate URL (Conditional) -->
+            <mat-form-field *ngIf="productForm.get('isAffiliate')?.value" appearance="outline"
+                class="full-width slide-in">
+                <mat-label>Link de Afiliado</mat-label>
+                <input matInput formControlName="affiliateUrl" placeholder="https://amazon.com/...">
+                <mat-icon matSuffix>link</mat-icon>
+                <mat-error *ngIf="productForm.get('affiliateUrl')?.hasError('required')">
+                    Link de afiliado é obrigatório
+                </mat-error>
+            </mat-form-field>
+
+            <div class="form-actions">
+                <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="productForm.invalid || isLoading">
+                    {{ isLoading ? 'Salvando...' : 'Salvar Produto' }}
+                </button>
+            </div>
+
+        </form>
+    </mat-card>
+</div>

@@ -13,4 +13,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
             "(:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')))")
     List<Product> search(@Param("categoryId") Long categoryId, @Param("name") String name);
+
+    /**
+     * Conta a quantidade de produtos afiliados.
+     */
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.isAffiliate = true")
+    Long countAffiliateProducts();
+
+    /**
+     * Conta a quantidade de produtos nativos (venda própria).
+     */
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.isAffiliate = false")
+    Long countNativeProducts();
 }

@@ -26,8 +26,9 @@ public class Product {
     private String description;
     private BigDecimal price;
     private String imageUrl;
+
     private String affiliateUrl;
-    private Boolean isAffiliate = false;
+    private boolean isAffiliate;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

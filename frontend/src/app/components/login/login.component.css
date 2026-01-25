@@ -1,0 +1,68 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    /* Centered visually */
+    padding: 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 24px;
+    background-color: var(--mat-sys-surface-container);
+    /* Adjust if needed for specific dark mode look */
+}
+
+mat-card-header {
+    margin-bottom: 24px;
+    justify-content: center;
+    text-align: center;
+}
+
+mat-card-title {
+    font-size: 1.5rem !important;
+    font-weight: 600;
+    margin-bottom: 8px !important;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 24px 0;
+    /* Taller button */
+    font-size: 1rem;
+    margin-top: 16px;
+}
+
+.error-message {
+    color: var(--mat-sys-error);
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+mat-card-actions {
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.register-link {
+    font-size: 0.9rem;
+    color: var(--mat-sys-on-surface-variant);
+}
+
+.register-link a {
+    color: var(--mat-sys-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}

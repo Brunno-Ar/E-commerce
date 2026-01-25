@@ -1,0 +1,140 @@
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="header-info">
+            <h1>Dashboard</h1>
+            <p>Bem-vindo ao painel de controle da sua loja</p>
+        </div>
+        <button class="refresh-btn" (click)="loadDashboardData()">
+            <mat-icon>refresh</mat-icon>
+            Atualizar
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="loading-container">
+        <mat-spinner diameter="48"></mat-spinner>
+        <p>Carregando estatísticas...</p>
+    </div>
+    } @else {
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        @for (card of statCards(); track card.label) {
+        <div class="stat-card" [attr.data-color]="card.color">
+            <div class="card-header">
+                <div class="icon-container" [attr.data-color]="card.color">
+                    <mat-icon>{{ card.icon }}</mat-icon>
+                </div>
+                @if (card.trendUp !== undefined) {
+                <mat-icon class="trend-icon" [class.up]="card.trendUp" [class.down]="!card.trendUp">
+                    {{ card.trendUp ? 'trending_up' : 'trending_down' }}
+                </mat-icon>
+                }
+            </div>
+            <div class="card-body">
+                <span class="card-label">{{ card.label }}</span>
+                <span class="card-value">{{ card.value }}</span>
+                @if (card.trend) {
+                <span class="card-trend" [class.up]="card.trendUp">{{ card.trend }}</span>
+                }
+            </div>
+        </div>
+        }
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+        <!-- Recent Sales Table -->
+        <div class="content-card recent-sales">
+            <div class="card-title">
+                <h3>
+                    <mat-icon>receipt_long</mat-icon>
+                    Últimas Vendas
+                </h3>
+                <a href="/admin/orders" class="view-all-link">Ver todas</a>
+            </div>
+
+            @if (recentOrders().length === 0) {
+            <div class="empty-state">
+                <mat-icon>shopping_bag</mat-icon>
+                <p>Nenhuma venda registrada ainda</p>
+                <span>As vendas aparecerão aqui quando forem realizadas</span>
+            </div>
+            } @else {
+            <div class="table-container">
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Data</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (order of recentOrders(); track order.id) {
+                        <tr>
+                            <td class="order-id">#{{ order.id }}</td>
+                            <td>{{ order.dateTime | date:'dd/MM/yyyy HH:mm' }}</td>
+                            <td class="order-value">{{ order.totalValue | currency:'BRL' }}</td>
+                            <td>
+                                <span class="status-badge" [class]="getStatusClass(order.status)">
+                                    {{ getStatusLabel(order.status) }}
+                                </span>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="content-card quick-stats">
+            <div class="card-title">
+                <h3>
+                    <mat-icon>analytics</mat-icon>
+                    Resumo Rápido
+                </h3>
+            </div>
+
+            <div class="quick-stat-list">
+                <div class="quick-stat-item">
+                    <span class="stat-label">Produtos Nativos</span>
+                    <div class="stat-bar">
+                        <div class="stat-fill native"
+                            [style.width.%]="stats()?.totalProducts ? (stats()!.nativeProducts / stats()!.totalProducts * 100) : 0">
+                        </div>
+                    </div>
+                    <span class="stat-value">{{ stats()?.nativeProducts || 0 }}</span>
+                </div>
+
+                <div class="quick-stat-item">
+                    <span class="stat-label">Produtos Afiliados</span>
+                    <div class="stat-bar">
+                        <div class="stat-fill affiliate"
+                            [style.width.%]="stats()?.totalProducts ? (stats()!.affiliateProducts / stats()!.totalProducts * 100) : 0">
+                        </div>
+                    </div>
+                    <span class="stat-value">{{ stats()?.affiliateProducts || 0 }}</span>
+                </div>
+
+                <div class="quick-stat-item">
+                    <span class="stat-label">Taxa de Conversão</span>
+                    <div class="stat-bar">
+                        <div class="stat-fill conversion" style="width: 15%"></div>
+                    </div>
+                    <span class="stat-value">~15%</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <mat-icon>info</mat-icon>
+                <p>Estatísticas mais detalhadas estarão disponíveis em breve!</p>
+            </div>
+        </div>
+    </div>
+    }
+</div>

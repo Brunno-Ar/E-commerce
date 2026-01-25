@@ -1,0 +1,78 @@
+<div class="admin-dashboard fade-in">
+    <header class="admin-header">
+        <div class="header-content">
+            <h1>Painel Administrativo</h1>
+            <p>Gerencie seu catálogo de produtos nativos e de afiliados</p>
+        </div>
+        <button mat-raised-button color="accent" class="new-btn" (click)="navigateToNew()">
+            <mat-icon>add</mat-icon>
+            Novo Produto
+        </button>
+    </header>
+
+    <div class="table-container mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="admin-table">
+
+            <!-- Image Column -->
+            <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef> Imagem </th>
+                <td mat-cell *matCellDef="let product">
+                    <img [src]="product.imageUrl" alt="Product" class="product-thumb">
+                </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nome </th>
+                <td mat-cell *matCellDef="let product" class="name-cell">
+                    <span class="product-name">{{ product.name }}</span>
+                    <span class="product-sku">ID: {{ product.id }}</span>
+                </td>
+            </ng-container>
+
+            <!-- Price Column -->
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Preço </th>
+                <td mat-cell *matCellDef="let product" class="price-cell">
+                    {{ product.price | currency:'BRL' }}
+                </td>
+            </ng-container>
+
+            <!-- Type Column -->
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                <td mat-cell *matCellDef="let product">
+                    <mat-chip-set>
+                        <mat-chip [class.affiliate-chip]="product.isAffiliate"
+                            [class.native-chip]="!product.isAffiliate">
+                            {{ product.isAffiliate ? 'Afiliado' : 'Nativo' }}
+                        </mat-chip>
+                    </mat-chip-set>
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Ações </th>
+                <td mat-cell *matCellDef="let product">
+                    <div class="actions-wrapper">
+                        <button mat-icon-button color="primary" (click)="editProduct(product.id)" matTooltip="Editar">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteProduct(product.id)" matTooltip="Excluir">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div *ngIf="dataSource.data.length === 0" class="empty-state">
+            <mat-icon>inventory_2</mat-icon>
+            <p>Nenhum produto encontrado.</p>
+        </div>
+    </div>
+</div>

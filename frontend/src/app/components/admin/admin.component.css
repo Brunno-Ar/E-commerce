@@ -1,0 +1,136 @@
+.admin-dashboard {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 80vh;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-content h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-content p {
+    color: #94a3b8;
+    margin: 0;
+}
+
+.new-btn {
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.table-container {
+    background: #1e293b;
+    /* Dark card background */
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #334155;
+}
+
+.admin-table {
+    width: 100%;
+    background: transparent;
+}
+
+th.mat-header-cell {
+    background-color: #0f172a;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #334155;
+}
+
+td.mat-cell {
+    color: #e2e8f0;
+    border-bottom: 1px solid #334155;
+    padding: 1rem;
+}
+
+/* Image Column */
+.product-thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #475569;
+}
+
+/* Name Column */
+.name-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product-name {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.product-sku {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+/* Price Column */
+.price-cell {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+    color: #10b981;
+    /* Green for money */
+}
+
+/* Chips Style Override */
+.native-chip {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    /* Blue tint */
+    color: #60a5fa !important;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.affiliate-chip {
+    background-color: rgba(168, 85, 247, 0.2) !important;
+    /* Purple tint */
+    color: #c084fc !important;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+/* Row Hover */
+tr.mat-row:hover {
+    background-color: #334155;
+    cursor: default;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    color: #64748b;
+}
+
+.empty-state mat-icon {
+    font-size: 3rem;
+    height: 3rem;
+    width: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}

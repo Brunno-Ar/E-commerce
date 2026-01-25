@@ -5,6 +5,7 @@ import com.bruno.backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -39,11 +40,24 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Product create(@RequestBody Product product) {
         return productRepository.save(product);
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+        return productRepository.findById(id)
+                .map(existing -> {
+                    product.setId(existing.getId());
+                    return ResponseEntity.ok(productRepository.save(product));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
