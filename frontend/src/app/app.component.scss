@@ -1,0 +1,302 @@
+// Sidebar Variables (Unified Layout)
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 72px;
+$header-height: 64px;
+$bg-dark: #0f172a;
+$bg-sidebar: #1e293b;
+$bg-card: #1e293b;
+$accent-blue: #3b82f6;
+$accent-indigo: #6366f1;
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$border-color: #334155;
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: $bg-dark;
+    font-family: 'Inter', sans-serif;
+}
+
+// Sidebar Styles
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: $sidebar-width;
+    background: $bg-sidebar;
+    border-right: 1px solid $border-color;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    overflow: hidden;
+
+    &.collapsed {
+        width: $sidebar-collapsed-width;
+
+        .sidebar-header {
+            padding: 16px 12px;
+        }
+
+        .logo-container {
+            justify-content: center;
+        }
+
+        .nav-item {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .nav-section {
+            padding: 8px;
+        }
+    }
+}
+
+.sidebar-header {
+    padding: 20px 16px;
+    border-bottom: 1px solid $border-color;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, $accent-blue, $accent-indigo);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+        color: white;
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+    }
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.brand-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: $text-primary;
+}
+
+.brand-subtitle {
+    font-size: 11px;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nav-section {
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &.account-section {
+        flex: 0;
+        border-top: 1px solid $border-color;
+        padding-top: 16px;
+        margin-top: auto;
+    }
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none; // Ensure links don't have underline
+
+    &:hover {
+        background: rgba($accent-blue, 0.1);
+        color: $text-primary;
+
+        .nav-icon {
+            color: $accent-blue;
+        }
+    }
+
+    &.active {
+        background: rgba($accent-blue, 0.15);
+        color: $accent-blue;
+        border-left: 3px solid $accent-blue;
+
+        .nav-icon {
+            color: $accent-blue;
+        }
+    }
+
+    &.logout:hover {
+        background: rgba(#ef4444, 0.15);
+        color: #ef4444;
+
+        .nav-icon {
+            color: #ef4444;
+        }
+    }
+}
+
+.nav-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.nav-label-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.nav-badge {
+    background: #ef4444;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    border: none;
+    background: transparent;
+    color: $text-secondary;
+    cursor: pointer;
+    border-top: 1px solid $border-color;
+    transition: all 0.2s ease;
+    font-size: 13px;
+
+    &:hover {
+        background: rgba($accent-blue, 0.1);
+        color: $text-primary;
+    }
+
+    mat-icon {
+        transition: transform 0.3s ease;
+
+        &.rotated {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+// Main Content (Global Wrapper)
+.main-content {
+    flex: 1;
+    margin-left: $sidebar-width;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .sidebar.collapsed ~ & {
+        margin-left: $sidebar-collapsed-width;
+    }
+}
+
+// Responsive: Overlay sidebar on mobile if needed (simplified for now)
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        &.open { transform: translateX(0); }
+    }
+    .main-content { margin-left: 0 !important; }
+}
+
+.top-header {
+    height: $header-height;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $bg-sidebar;
+    border-bottom: 1px solid $border-color;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.header-left {
+    .page-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: $text-primary;
+        margin: 0;
+    }
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba($accent-blue, 0.1);
+    color: $text-primary;
+
+    mat-icon {
+        color: $accent-blue;
+    }
+
+    .user-name {
+        font-size: 14px;
+        font-weight: 500;
+    }
+}
+
+.page-content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}

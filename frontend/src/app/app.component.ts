@@ -1,55 +1,128 @@
-import { Component, Inject, Renderer2 } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { HeroComponent } from './components/hero/hero.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { Component, Inject, Renderer2, inject, signal } from '@angular/core';
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { filter } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { AsyncPipe, DOCUMENT } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatRippleModule } from '@angular/material/core';
+
+import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
-import { map, Observable } from 'rxjs';
+
+interface NavItem {
+  icon: string;
+  label: string;
+  route: string;
+  badge?: number;
+}
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    CommonModule,
     RouterOutlet,
     RouterLink,
-    ProductListComponent,
-    MatToolbarModule,
     MatIconModule,
-    MatButtonModule,
-    MatBadgeModule,
-    MatSlideToggleModule,
-    AsyncPipe,
-    HeroComponent
+    MatTooltipModule,
+    MatRippleModule
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'frontend';
-  cartCount$: Observable<number>;
-  isDarkMode = false;
+  title = 'Technoo';
+  sidebarOpen = signal(true);
+  currentRoute = '';
 
-  constructor(
-    private cartService: CartService,
-    @Inject(DOCUMENT) private document: Document,
-    private renderer: Renderer2
-  ) {
-    this.cartCount$ = this.cartService.cartItems$.pipe(
-      map(items => items.reduce((acc, item) => acc + item.quantity, 0))
-    );
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  public cartService = inject(CartService);
+
+  // Menus definidos dinamicamente
+  adminItems: NavItem[] = [
+    { icon: 'dashboard', label: 'Dashboard', route: '/admin' },
+    { icon: 'inventory_2', label: 'Produtos', route: '/admin/products' },
+    { icon: 'shopping_cart', label: 'Pedidos', route: '/admin/orders' },
+    { icon: 'settings', label: 'Configurar Loja', route: '/admin/settings' }
+  ];
+
+  storeItems: NavItem[] = [
+    { icon: 'storefront', label: 'Loja', route: '/' },
+    { icon: 'shopping_bag', label: 'Carrinho', route: '/checkout' } // Badge será atualizado dinamicamente
+  ];
+
+  accountItems: NavItem[] = [
+    { icon: 'login', label: 'Entrar', route: '/login' },
+    { icon: 'person_add', label: 'Cadastrar', route: '/register' }
+  ];
+
+  loggedInItems: NavItem[] = [
+    { icon: 'logout', label: 'Sair', route: '/logout' }
+  ];
+
+  constructor() {
+    // Escuta mudanças de rota para destacar link ativo
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event) => {
+      this.currentRoute = event.urlAfterRedirects;
+    });
   }
 
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isDarkMode) {
-      this.renderer.addClass(this.document.body, 'dark-theme');
+  toggleSidebar(): void {
+    this.sidebarOpen.update(v => !v);
+  }
+
+  isActive(route: string): boolean {
+    if (route === '/' && this.currentRoute !== '/') return false;
+    return this.currentRoute.startsWith(route);
+  }
+
+  handleNavClick(item: NavItem): void {
+    if (item.route === '/logout') {
+      this.authService.logout();
     } else {
-      this.renderer.removeClass(this.document.body, 'dark-theme');
+      this.router.navigate([item.route]);
     }
+  }
+
+  // Retorna os itens principais baseado no role
+  getMainNavItems(): NavItem[] {
+    if (this.isAdmin()) {
+      return [...this.adminItems, ...this.storeItems];
+    }
+    // Atualiza badge do carrinho
+    const cartCount = this.cartService.getCount();
+    const store = this.storeItems.map(item => {
+      if (item.route === '/checkout') return { ...item, badge: cartCount > 0 ? cartCount : undefined };
+      return item;
+    });
+    return store;
+  }
+
+  // Retorna itens de conta
+  getAccountItems(): NavItem[] {
+    if (this.authService.currentUser()) {
+      return this.loggedInItems;
+    }
+    return this.accountItems;
+  }
+
+  getUserName(): string {
+    const user = this.authService.currentUser();
+    return user?.name || 'Visitante';
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  getPageTitle(): string {
+    if (this.currentRoute.startsWith('/admin')) return 'Painel Administrativo';
+    if (this.currentRoute === '/checkout') return 'Carrinho de Compras';
+    if (this.currentRoute === '/login') return 'Login';
+    if (this.currentRoute === '/register') return 'Cadastro';
+    return 'Technoo Store';
   }
 }
