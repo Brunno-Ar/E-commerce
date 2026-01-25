@@ -1,23 +1,41 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, effect } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CartItem } from '../models/cart-item.model';
 import { Product } from '../models/product.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CartService {
-    private cartKey = 'ecommerce_cart';
     private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
     cartItems$ = this.cartItemsSubject.asObservable();
+    private authService = inject(AuthService);
+    private snackBar = inject(MatSnackBar);
 
-    constructor(private snackBar: MatSnackBar) {
+    constructor() {
+        // Initial load
         this.loadCart();
+
+        // Reactively reload cart when user changes (login/logout)
+        effect(() => {
+            const user = this.authService.currentUser();
+            this.loadCart();
+        });
+
+        // Listen to storage events to sync across tabs
+        window.addEventListener('storage', () => this.loadCart());
+    }
+
+    private getCartKey(): string {
+        const email = this.authService.getUserEmail();
+        return email ? `cart_${email}` : 'cart_guest';
     }
 
     private loadCart() {
-        const savedCart = localStorage.getItem(this.cartKey);
+        const key = this.getCartKey();
+        const savedCart = localStorage.getItem(key);
         if (savedCart) {
             try {
                 this.cartItemsSubject.next(JSON.parse(savedCart));
@@ -25,11 +43,14 @@ export class CartService {
                 console.error('Error parsing cart from local storage', e);
                 this.cartItemsSubject.next([]);
             }
+        } else {
+            this.cartItemsSubject.next([]);
         }
     }
 
     private saveCart(items: CartItem[]) {
-        localStorage.setItem(this.cartKey, JSON.stringify(items));
+        const key = this.getCartKey();
+        localStorage.setItem(key, JSON.stringify(items));
         this.cartItemsSubject.next(items);
     }
 

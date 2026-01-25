@@ -39,4 +39,21 @@ export class EcommerceService {
     createOrder(orderData: { items: { productId: number; quantity: number }[] }): Observable<number> {
         return this.http.post<number>(`${this.apiUrl}/orders`, orderData);
     }
+
+    checkout(items: any[]): Observable<{ url: string }> {
+        return this.http.post<{ url: string }>(`${this.apiUrl}/checkout/process`, items);
+    }
+
+    // Admin Methods
+    createProduct(product: Product): Observable<Product> {
+        return this.http.post<Product>(`${this.apiUrl}/products`, product);
+    }
+
+    updateProduct(id: number, product: Product): Observable<Product> {
+        return this.http.put<Product>(`${this.apiUrl}/products/${id}`, product);
+    }
+
+    deleteProduct(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/products/${id}`);
+    }
 }
