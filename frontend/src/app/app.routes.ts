@@ -14,6 +14,7 @@ export const routes: Routes = [
     // Public Routes (Rendered inside AppComponent with Sidebar)
     { path: '', component: ProductListComponent },
     { path: 'checkout', component: CheckoutComponent },
+    { path: 'my-orders', loadComponent: () => import('./components/client-orders/client-orders.component').then(m => m.ClientOrdersComponent) },
     { path: 'checkout/callback', loadComponent: () => import('./components/checkout-callback/checkout-callback.component').then(m => m.CheckoutCallbackComponent) },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
@@ -40,13 +41,18 @@ export const routes: Routes = [
         canActivate: [adminGuard]
     },
     {
+        path: 'admin/categories',
+        loadComponent: () => import('./components/admin-categories/admin-categories.component').then(m => m.AdminCategoriesComponent),
+        canActivate: [adminGuard]
+    },
+    {
         path: 'admin/orders',
-        component: AdminDashboardComponent, // TODO: Create OrdersComponent 
+        loadComponent: () => import('./components/admin-orders/admin-orders.component').then(m => m.AdminOrdersComponent),
         canActivate: [adminGuard]
     },
     {
         path: 'admin/settings',
-        component: AdminDashboardComponent, // TODO: Create SettingsComponent
+        loadComponent: () => import('./components/admin-settings/admin-settings.component').then(m => m.AdminSettingsComponent),
         canActivate: [adminGuard]
     }
 ];

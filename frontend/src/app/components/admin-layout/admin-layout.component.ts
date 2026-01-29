@@ -26,6 +26,7 @@ export class AdminLayoutComponent {
     navItems: NavItem[] = [
         { icon: 'dashboard', label: 'Dashboard', route: '/admin' },
         { icon: 'inventory_2', label: 'Produtos', route: '/admin/products' },
+        { icon: 'category', label: 'Categorias', route: '/admin/categories' },
         { icon: 'shopping_cart', label: 'Pedidos', route: '/admin/orders' },
         { icon: 'settings', label: 'Configurar Loja', route: '/admin/settings' }
     ];

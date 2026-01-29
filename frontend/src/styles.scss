@@ -108,3 +108,14 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #475569;
 }
+
+// Snackbar de Erro (estoque, validações, etc.)
+.snackbar-error {
+    --mdc-snackbar-container-color: #dc2626 !important;
+    --mdc-snackbar-supporting-text-color: white !important;
+    --mat-snack-bar-button-color: #fecaca !important;
+
+    .mdc-snackbar__surface {
+        background-color: #dc2626 !important;
+    }
+}

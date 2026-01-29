@@ -1,10 +1,10 @@
 <div class="cart-page fade-in">
   <div class="page-header">
     <h1 class="page-title">
-      YOUR <span class="highlight">COMMAND CENTER</span> CART
+      CHECKOUT <span class="highlight">COMMAND CENTER</span>
     </h1>
     <div class="breadcrumbs">
-      <a routerLink="/">STORE</a> <mat-icon>chevron_right</mat-icon> <span>SHOPPING CART</span>
+      <a routerLink="/">STORE</a> <mat-icon>chevron_right</mat-icon> <span>CHECKOUT</span>
     </div>
   </div>
 
@@ -19,53 +19,94 @@
   </div>
   } @else {
   <div class="cart-layout">
-    <!-- Product List -->
-    <div class="cart-items-column">
-      @for (item of cartItems; track item.product.id) {
-      <div class="cart-item-card">
-        <div class="item-image">
-          @if (item.product.imageUrl) {
-          <img [src]="item.product.imageUrl" [alt]="item.product.name">
-          } @else {
-          <mat-icon>image</mat-icon>
+
+    <div class="main-content-column">
+      <!-- Shipping Address Section -->
+      <section class="checkout-section">
+        <h2 class="section-title"><mat-icon>local_shipping</mat-icon> SHIPPING ADDRESS</h2>
+        <form [formGroup]="addressForm" class="address-form-grid">
+
+          <mat-form-field appearance="outline" class="col-span-1">
+            <mat-label>CEP</mat-label>
+            <input matInput formControlName="zipCode" placeholder="00000000" maxlength="8" (blur)="onZipCodeBlur()">
+            <mat-error *ngIf="addressForm.get('zipCode')?.hasError('required')">CEP is required</mat-error>
+            <mat-error *ngIf="addressForm.get('zipCode')?.hasError('pattern')">Invalid CEP</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-3">
+            <mat-label>Street Address</mat-label>
+            <input matInput formControlName="street">
+            <mat-error *ngIf="addressForm.get('street')?.hasError('required')">Street is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-1">
+            <mat-label>Number</mat-label>
+            <input matInput formControlName="number" #numberInput>
+            <mat-error *ngIf="addressForm.get('number')?.hasError('required')">Number is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-2">
+            <mat-label>Complement</mat-label>
+            <input matInput formControlName="complement" placeholder="Apt, Suite, etc. (optional)">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-2">
+            <mat-label>Neighborhood</mat-label>
+            <input matInput formControlName="neighborhood">
+            <mat-error *ngIf="addressForm.get('neighborhood')?.hasError('required')">Neighborhood is
+              required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-2">
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city">
+            <mat-error *ngIf="addressForm.get('city')?.hasError('required')">City is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="col-span-1">
+            <mat-label>State</mat-label>
+            <input matInput formControlName="state" placeholder="UF" maxlength="2">
+            <mat-error *ngIf="addressForm.get('state')?.hasError('required')">State is required</mat-error>
+          </mat-form-field>
+        </form>
+      </section>
+
+      <!-- Cart Items Section -->
+      <section class="checkout-section">
+        <h2 class="section-title"><mat-icon>inventory_2</mat-icon> ITEMS IN CART</h2>
+        <div class="cart-items-list">
+          @for (item of cartItems; track item.product.id) {
+          <div class="cart-item-row">
+            <div class="item-visual">
+              @if (item.product.imageUrl) {
+              <img [src]="item.product.imageUrl" [alt]="item.product.name">
+              } @else {
+              <div class="placeholder-img"><mat-icon>image</mat-icon></div>
+              }
+            </div>
+            <div class="item-info">
+              <h3>{{ item.product.name }}</h3>
+              <div class="price">{{ item.product.price | currency:'BRL' }}</div>
+            </div>
+            <div class="item-actions">
+              <div class="qty-selector">
+                <button (click)="decrementQuantity(item)">-</button>
+                <span>{{ item.quantity }}</span>
+                <button (click)="incrementQuantity(item)">+</button>
+              </div>
+              <button mat-icon-button color="warn" (click)="removeItem(item)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
           }
         </div>
-
-        <div class="item-details">
-          <span class="item-category">HARDWARE</span>
-          <h3 class="item-name">{{ item.product.name }}</h3>
-
-          <div class="item-controls">
-            <div class="quantity-control">
-              <span class="label">QUANTITY</span>
-              <div class="qty-actions">
-                <button (click)="decrementQuantity(item)">
-                  <mat-icon>remove</mat-icon>
-                </button>
-                <span class="qty-value">{{ item.quantity }}</span>
-                <button (click)="incrementQuantity(item)">
-                  <mat-icon>add</mat-icon>
-                </button>
-              </div>
-            </div>
-
-            <button class="remove-btn" (click)="removeItem(item)">
-              <mat-icon>delete_outline</mat-icon>
-              REMOVE
-            </button>
-          </div>
-        </div>
-
-        <div class="item-price">
-          {{ item.product.price * item.quantity | currency:'BRL' }}
-        </div>
-      </div>
-      }
+      </section>
     </div>
 
     <!-- Order Summary -->
     <div class="summary-column">
-      <div class="summary-card">
+      <div class="summary-card sticky-summary">
         <div class="summary-header">
           <mat-icon>receipt_long</mat-icon>
           <h2>ORDER SUMMARY</h2>
@@ -77,12 +118,8 @@
             <span class="value">{{ subtotal | currency:'BRL' }}</span>
           </div>
           <div class="summary-row">
-            <span>Shipping (Standard)</span>
-            <span class="value highlight-text">FREE</span>
-          </div>
-          <div class="summary-row">
-            <span>Tax</span>
-            <span class="value">{{ tax | currency:'BRL' }}</span>
+            <span>Shipping</span>
+            <span class="value highlight-text">Calculated at next step</span>
           </div>
         </div>
 
@@ -95,84 +132,17 @@
           @if (loading) {
           <span>PROCESSING...</span>
           } @else {
-          <span>PROCEED TO CHECKOUT</span>
-          <mat-icon>arrow_forward</mat-icon>
+          <span>FINALIZE ORDER</span>
+          <mat-icon>check_circle</mat-icon>
           }
         </button>
 
-        <button class="continue-shopping-btn" (click)="continueShopping()">
-          CONTINUE SHOPPING
-        </button>
-
         <div class="secure-checkout">
-          <span>SECURE CHECKOUT POWERED BY</span>
-          <div class="payment-icons">
-            <mat-icon>lock</mat-icon>
-            <mat-icon>credit_card</mat-icon>
-            <span>Mercado Pago</span>
-          </div>
+          <mat-icon>lock</mat-icon> <span>Secure SSL Encrypted Transaction</span>
         </div>
       </div>
     </div>
+
   </div>
   }
-
-  <!-- Recommended Hardware Section -->
-  <div class="recommended-section fade-in">
-    <div class="section-header">
-      <div class="accent-bar"></div>
-      <h2>RECOMMENDED HARDWARE</h2>
-      <div class="nav-arrows">
-        <button mat-icon-button><mat-icon>chevron_left</mat-icon></button>
-        <button mat-icon-button><mat-icon>chevron_right</mat-icon></button>
-      </div>
-    </div>
-
-    <div class="recommended-grid">
-      <!-- Mock Items matching image -->
-      <div class="rec-card">
-        <div class="rec-image">
-          <mat-icon>keyboard</mat-icon>
-        </div>
-        <div class="rec-info">
-          <span class="rec-category">PERIPHERALS</span>
-          <h3>Apex Pro TKL</h3>
-          <span class="rec-price">$179.00</span>
-        </div>
-      </div>
-
-      <div class="rec-card">
-        <div class="rec-image">
-          <mat-icon>mouse</mat-icon>
-        </div>
-        <div class="rec-info">
-          <span class="rec-category">PERIPHERALS</span>
-          <h3>G Pro X Superlight 2</h3>
-          <span class="rec-price">$159.00</span>
-        </div>
-      </div>
-
-      <div class="rec-card">
-        <div class="rec-image">
-          <mat-icon>memory</mat-icon>
-        </div>
-        <div class="rec-info">
-          <span class="rec-category">COOLING</span>
-          <h3>Kraken Elite 360 RGB</h3>
-          <span class="rec-price">$279.00</span>
-        </div>
-      </div>
-
-      <div class="rec-card">
-        <div class="rec-image">
-          <mat-icon>storage</mat-icon>
-        </div>
-        <div class="rec-info">
-          <span class="rec-category">STORAGE</span>
-          <h3>990 Pro 2TB NVMe</h3>
-          <span class="rec-price">$189.00</span>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

@@ -58,6 +58,7 @@ export class AppComponent {
   ];
 
   loggedInItems: NavItem[] = [
+    { icon: 'receipt_long', label: 'Meus Pedidos', route: '/my-orders' },
     { icon: 'logout', label: 'Sair', route: '/logout' }
   ];
 
@@ -123,6 +124,7 @@ export class AppComponent {
     if (this.currentRoute === '/checkout') return 'Carrinho de Compras';
     if (this.currentRoute === '/login') return 'Login';
     if (this.currentRoute === '/register') return 'Cadastro';
+    if (this.currentRoute === '/my-orders') return 'Meus Pedidos';
     return 'Technoo Store';
   }
 }

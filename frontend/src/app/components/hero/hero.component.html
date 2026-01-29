@@ -2,15 +2,14 @@
     <div class="hero-content">
         <div class="text-column">
             <span class="eyebrow">NEXT GENERATION HARDWARE</span>
-            <h1>Future-Proof <br> <span class="gradient-text">Your Setup</span></h1>
+            <h1>{{ config?.heroTitle || 'Future-Proof' }} <br> <span class="gradient-text">Your Setup</span></h1>
             <p class="subtitle">
-                Experience high-performance computing with our cutting-edge components.
-                Designed for gamers, creators, and professionals who demand the best.
+                {{ config?.heroSubtitle || 'Experience high-performance computing with our cutting-edge components.' }}
             </p>
 
             <div class="actions">
                 <button mat-raised-button color="primary" class="cta-button">
-                    Explore
+                    {{ config?.heroButtonText || 'Explore' }}
                 </button>
                 <button mat-stroked-button class="secondary-button">
                     Build PC

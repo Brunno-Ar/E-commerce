@@ -1,0 +1,102 @@
+<div class="dialog-container">
+    <!-- Header -->
+    <div class="dialog-header">
+        <h2>Detalhes do Pedido <span class="order-id">#{{ order()?.id }}</span></h2>
+        <button mat-icon-button (click)="dialogRef.close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-state" *ngIf="loading()">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Carregando detalhes...</p>
+    </div>
+
+    <!-- Content -->
+    <mat-dialog-content class="content" *ngIf="!loading() && order()">
+        <!-- Status Control -->
+        <mat-card class="status-card">
+            <div class="status-header">
+                <span class="label">Status Atual</span>
+                <span class="badge" [style.background-color]="getStatusColor(order()!.status)">
+                    {{ getStatusLabel(order()!.status) }}
+                </span>
+            </div>
+
+            <div class="status-actions">
+                <mat-form-field appearance="outline" class="status-selector">
+                    <mat-label>Atualizar Status</mat-label>
+                    <mat-select [(ngModel)]="currentStatus" [disabled]="updating()">
+                        <mat-option *ngFor="let opt of statusOptions" [value]="opt.value">
+                            {{ opt.label }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-flat-button color="primary" [disabled]="currentStatus === order()!.status || updating()"
+                    (click)="updateStatus()">
+                    <mat-icon *ngIf="!updating()">save</mat-icon>
+                    <mat-spinner diameter="20" *ngIf="updating()"></mat-spinner>
+                    <span *ngIf="!updating()">Salvar</span>
+                </button>
+            </div>
+        </mat-card>
+
+        <div class="grid-layout">
+            <!-- Customer Info -->
+            <div class="info-section">
+                <h3><mat-icon>person</mat-icon> Cliente</h3>
+                <div class="info-content">
+                    <p><strong>Nome:</strong> {{ order()?.user?.name || 'Cliente Removido' }}</p>
+                    <p><strong>Email:</strong> {{ order()?.user?.email }}</p>
+                    <p><strong>Data:</strong> {{ order()!.dateTime | date:'dd/MM/yyyy HH:mm' }}</p>
+                </div>
+            </div>
+
+            <!-- Shipping Info -->
+            <div class="info-section">
+                <h3><mat-icon>local_shipping</mat-icon> Entrega</h3>
+                <div class="info-content" *ngIf="order()?.shippingAddress; else noAddress">
+                    <p>{{ order()?.shippingAddress?.street }}, {{ order()?.shippingAddress?.number }}</p>
+                    <p *ngIf="order()?.shippingAddress?.complement">{{ order()?.shippingAddress?.complement }}</p>
+                    <p>{{ order()?.shippingAddress?.neighborhood }} - {{ order()?.shippingAddress?.city }}/{{
+                        order()?.shippingAddress?.state }}</p>
+                    <p><strong>CEP:</strong> {{ order()?.shippingAddress?.zipCode }}</p>
+                </div>
+                <ng-template #noAddress>
+                    <p class="text-muted">Endereço não informado.</p>
+                </ng-template>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Items Table -->
+        <div class="items-section">
+            <h3>Itens do Pedido</h3>
+            <div class="items-list">
+                <div class="item-row header">
+                    <div class="col-prod">Produto</div>
+                    <div class="col-qtd">Qtd</div>
+                    <div class="col-price">Preço</div>
+                    <div class="col-total">Total</div>
+                </div>
+
+                <div class="item-row" *ngFor="let item of order()!.items">
+                    <div class="col-prod">
+                        <span class="prod-name">{{ item.product.name }}</span>
+                    </div>
+                    <div class="col-qtd">{{ item.quantity }}</div>
+                    <div class="col-price">{{ item.priceAtPurchase | currency:'BRL' }}</div>
+                    <div class="col-total">{{ (item.priceAtPurchase * item.quantity) | currency:'BRL' }}</div>
+                </div>
+            </div>
+
+            <div class="order-total">
+                <span>Total do Pedido:</span>
+                <span class="amount">{{ order()!.totalValue | currency:'BRL' }}</span>
+            </div>
+        </div>
+    </mat-dialog-content>
+</div>

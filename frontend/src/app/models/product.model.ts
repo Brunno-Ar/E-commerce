@@ -10,4 +10,5 @@ export interface Product {
     category?: Category;
     isAffiliate?: boolean;
     affiliateUrl?: string;
+    stockQuantity?: number;
 }

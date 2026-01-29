@@ -1,0 +1,131 @@
+.orders-container {
+    padding: 0;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    .header-info {
+        h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .subtitle {
+            margin: 0.25rem 0 0;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+    }
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    gap: 1rem;
+    color: #94a3b8;
+}
+
+.table-card {
+    background: #1e293b !important;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.orders-table {
+    width: 100%;
+    background: transparent !important;
+
+    th {
+        background: #0f172a !important;
+        color: #94a3b8 !important;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #334155 !important;
+        padding: 1rem;
+    }
+
+    td {
+        color: #f8fafc !important;
+        border-bottom: 1px solid #334155 !important;
+        padding: 1rem;
+    }
+
+    tr:hover td {
+        background: rgba(59, 130, 246, 0.05) !important;
+    }
+
+    .id-cell {
+        font-family: 'Roboto Mono', monospace;
+        color: #64748b !important;
+    }
+
+    .total-cell {
+        font-weight: 700;
+        color: #3b82f6 !important;
+    }
+
+    .customer-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        mat-icon {
+            font-size: 18px;
+            height: 18px;
+            width: 18px;
+            color: #64748b;
+        }
+    }
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid;
+}
+
+.details-btn {
+    height: 32px;
+    line-height: 32px;
+    font-size: 0.8rem;
+    padding: 0 12px;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+
+    mat-icon {
+        font-size: 64px;
+        height: 64px;
+        width: 64px;
+        color: #475569;
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        margin: 0;
+        color: #f8fafc;
+        font-size: 1.25rem;
+    }
+}

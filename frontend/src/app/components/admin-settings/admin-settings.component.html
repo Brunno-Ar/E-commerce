@@ -1,0 +1,30 @@
+<div class="container mx-auto p-6">
+    <h2 class="text-3xl font-bold mb-6 text-white">Configurações da Loja</h2>
+
+    <div class="bg-[#1e293b] p-6 rounded-lg shadow-lg">
+        <form [formGroup]="form" (ngSubmit)="saveConfig()" class="flex flex-col gap-4">
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Título Principal (Hero)</mat-label>
+                <input matInput formControlName="heroTitle" placeholder="Ex: Future-Proof Your Setup">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Subtítulo</mat-label>
+                <textarea matInput formControlName="heroSubtitle" rows="3"
+                    placeholder="Ex: Experience high-performance..."></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Texto do Botão</mat-label>
+                <input matInput formControlName="heroButtonText" placeholder="Ex: Explore">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"
+                class="w-fit self-end text-lg py-1 px-8">
+                Salvar Alterações
+            </button>
+
+        </form>
+    </div>
+</div>

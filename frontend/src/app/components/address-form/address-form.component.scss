@@ -1,0 +1,73 @@
+.address-form-card {
+  max-width: 600px;
+  margin: 0 auto;
+
+  .mat-mdc-card-header {
+    padding-bottom: 8px;
+  }
+
+  .mat-mdc-card-content {
+    padding: 16px;
+  }
+
+  .mat-mdc-card-actions {
+    padding: 16px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: -8px; // Compensate for mat-form-field margin
+
+    .street-field {
+      flex: 3;
+    }
+
+    .number-field {
+      flex: 1;
+    }
+
+    .neighborhood-field {
+      flex: 2;
+    }
+
+    .cep-field {
+      flex: 1;
+    }
+
+    .city-field {
+      flex: 2;
+    }
+
+    .state-field {
+      flex: 1;
+    }
+  }
+
+  .default-checkbox {
+    margin: 16px 0;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .address-form-card {
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+
+      .street-field,
+      .number-field,
+      .neighborhood-field,
+      .cep-field,
+      .city-field,
+      .state-field {
+        flex: 1;
+      }
+    }
+  }
+}

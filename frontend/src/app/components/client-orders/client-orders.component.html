@@ -1,0 +1,64 @@
+<div class="container mx-auto p-6">
+    <h2 class="text-3xl font-bold mb-6 text-white">Meus Pedidos</h2>
+
+    <div class="mat-elevation-z8 overflow-hidden rounded-lg bg-[#1e293b]">
+        <table mat-table [dataSource]="orders" class="w-full bg-[#1e293b] text-gray-300">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef class="text-gray-400"> ID </th>
+                <td mat-cell *matCellDef="let order" class="text-gray-200"> #{{order.id}} </td>
+            </ng-container>
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef class="text-gray-400"> Data </th>
+                <td mat-cell *matCellDef="let order" class="text-gray-200"> {{order.dateTime | date:'dd/MM/yyyy HH:mm'}}
+                </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef class="text-gray-400"> Status </th>
+                <td mat-cell *matCellDef="let order">
+                    <mat-chip-set>
+                        <mat-chip [ngClass]="{
+                'status-paid': order.status === 'PAID',
+                'status-pending': order.status === 'PENDING',
+                'status-canceled': order.status === 'CANCELED'
+            }" class="status-chip">
+                            {{order.status}}
+                        </mat-chip>
+                    </mat-chip-set>
+                </td>
+            </ng-container>
+
+            <!-- Total Column -->
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef class="text-gray-400"> Total </th>
+                <td mat-cell *matCellDef="let order" class="text-gray-200 font-bold"> {{order.totalValue |
+                    currency:'BRL'}} </td>
+            </ng-container>
+
+            <!-- Items Column -->
+            <ng-container matColumnDef="items">
+                <th mat-header-cell *matHeaderCellDef class="text-gray-400"> Itens </th>
+                <td mat-cell *matCellDef="let order" class="text-gray-300">
+                    <ul class="list-disc pl-4 text-sm">
+                        <li *ngFor="let item of order.items">
+                            {{item.product?.name ?? 'Produto Indisponível'}} (x{{item.quantity}})
+                        </li>
+                    </ul>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="!bg-[#0f172a]"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-[#334155] transition-colors">
+            </tr>
+        </table>
+
+        <div *ngIf="orders.length === 0" class="p-8 text-center text-gray-400">
+            Nenhum pedido encontrado.
+        </div>
+    </div>
+</div>

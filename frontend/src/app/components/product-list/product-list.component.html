@@ -36,14 +36,28 @@
                 <mat-card-title>{{ product.name }}</mat-card-title>
                 <p class="description">{{ product.description }}</p>
 
+                <!-- Alerta de Escassez -->
+                <div class="stock-alert" *ngIf="!product.isAffiliate && product.stockQuantity !== undefined">
+                    <span class="low-stock" *ngIf="product.stockQuantity > 0 && product.stockQuantity < 5">
+                        🔥 Restam apenas {{ product.stockQuantity }} unidades!
+                    </span>
+                    <span class="out-of-stock" *ngIf="product.stockQuantity === 0">
+                        ❌ Produto Esgotado
+                    </span>
+                </div>
+
                 <div class="card-footer">
                     <span class="price-tag">{{ product.price | currency:'BRL' }}</span>
 
-                    <button *ngIf="!product.isAffiliate" mat-icon-button color="primary" class="add-btn"
-                        (click)="addToCart(product)">
-                        <mat-icon>shopping_cart</mat-icon>
+                    <!-- Botão de Compra (Produtos Nativos) -->
+                    <button *ngIf="!product.isAffiliate" mat-icon-button
+                        [ngClass]="{'add-btn': product.stockQuantity !== 0, 'add-btn-disabled': product.stockQuantity === 0}"
+                        [disabled]="product.stockQuantity === 0" (click)="addToCart(product)">
+                        <mat-icon>{{ product.stockQuantity === 0 ? 'remove_shopping_cart' : 'shopping_cart'
+                            }}</mat-icon>
                     </button>
 
+                    <!-- Botão de Afiliado -->
                     <button *ngIf="product.isAffiliate" mat-flat-button color="accent" class="add-btn affiliate-btn"
                         (click)="openAffiliateLink(product.affiliateUrl)">
                         <mat-icon>open_in_new</mat-icon>

@@ -58,6 +58,17 @@ export class CartService {
         const currentItems = this.cartItemsSubject.value;
         const existingItem = currentItems.find(item => item.product.id === product.id);
 
+        // Verificação de estoque (apenas para produtos não-afiliados)
+        if (!product.isAffiliate) {
+            const stockQuantity = product.stockQuantity ?? 0;
+            const currentQuantityInCart = existingItem ? existingItem.quantity : 0;
+
+            if (currentQuantityInCart + 1 > stockQuantity) {
+                this.showSnackBarError(`Limite de estoque atingido para "${product.name}". Disponível: ${stockQuantity}`);
+                return;
+            }
+        }
+
         let updatedItems;
 
         if (existingItem) {
@@ -69,6 +80,15 @@ export class CartService {
 
         this.saveCart(updatedItems);
         this.showSnackBar(`${product.name} adicionado ao carrinho`);
+    }
+
+    private showSnackBarError(message: string) {
+        this.snackBar.open(message, 'Fechar', {
+            duration: 4000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-error']
+        });
     }
 
     removeFromCart(productId: number) {

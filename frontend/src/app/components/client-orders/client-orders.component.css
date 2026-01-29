@@ -1,0 +1,22 @@
+/* Custom Chip Colors for Status */
+::ng-deep .status-paid {
+    --mdc-chip-elevated-container-color: #22c55e !important;
+    /* Green-500 */
+    --mdc-chip-label-text-color: black !important;
+    background-color: #22c55e !important;
+    /* Fallback */
+    color: black !important;
+}
+
+::ng-deep .status-pending {
+    --mdc-chip-elevated-container-color: #eab308 !important;
+    /* Yellow-500 */
+    --mdc-chip-label-text-color: black !important;
+    background-color: #eab308 !important;
+    /* Fallback */
+    color: black !important;
+}
+
+::ng-deep .mat-mdc-table {
+    background: transparent;
+}
