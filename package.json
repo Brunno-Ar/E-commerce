@@ -3,11 +3,14 @@
     "version": "1.0.0",
     "description": "Monorepo for Spring Boot Backend and Angular Frontend",
     "scripts": {
-        "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+        "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run start:backend\" \"npm run start:frontend\"",
+        "start": "npm run dev",
         "start:backend": "cd backend && ./mvnw spring-boot:run",
         "start:frontend": "cd frontend && npm start",
         "install:all": "npm install && cd frontend && npm install && cd ../backend && ./mvnw install -DskipTests",
-        "build": "echo 'Build script placeholder for Vercel/Production'"
+        "build": "npm run build:frontend && npm run build:backend",
+        "build:frontend": "cd frontend && npm run build",
+        "build:backend": "cd backend && ./mvnw package -DskipTests"
     },
     "dependencies": {
         "concurrently": "^9.1.2"
