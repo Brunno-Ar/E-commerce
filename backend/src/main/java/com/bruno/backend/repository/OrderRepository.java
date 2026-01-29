@@ -7,7 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
 
+import java.util.List;
+
 public interface OrderRepository extends JpaRepository<Order, Long> {
+
+    List<Order> findByUserEmail(String email);
 
     /**
      * Soma o valor total de todos os pedidos com status PAID.

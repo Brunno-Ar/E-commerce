@@ -21,6 +21,29 @@ public class Order {
 
     private BigDecimal totalValue;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Embedded
+    private ShippingAddress shippingAddress;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
