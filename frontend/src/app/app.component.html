@@ -1,6 +1,7 @@
 <div class="app-container">
     <!-- Sidebar -->
-    <nav class="sidebar" [class.collapsed]="!sidebarOpen()">
+    <nav class="sidebar" [class.collapsed]="!sidebarOpen()" (mouseenter)="onSidebarEnter()"
+        (mouseleave)="onSidebarLeave()">
         <!-- Header/Logo -->
         <div class="sidebar-header">
             <div class="logo-container">
