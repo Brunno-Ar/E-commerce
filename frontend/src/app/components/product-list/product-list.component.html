@@ -52,8 +52,10 @@
                     <!-- Botão de Compra (Produtos Nativos) -->
                     <button *ngIf="!product.isAffiliate" mat-icon-button
                         [ngClass]="{'add-btn': product.stockQuantity !== 0, 'add-btn-disabled': product.stockQuantity === 0}"
-                        [disabled]="product.stockQuantity === 0" (click)="addToCart(product)">
-                        <mat-icon>{{ product.stockQuantity === 0 ? 'remove_shopping_cart' : 'shopping_cart'
+                        [disabled]="product.stockQuantity === 0" (click)="addToCart(product)"
+                        [attr.aria-label]="product.stockQuantity === 0 ? 'Produto esgotado' : 'Adicionar ' + product.name + ' ao carrinho'"
+                        [matTooltip]="product.stockQuantity === 0 ? 'Sem estoque' : 'Adicionar ao carrinho'">
+                        <mat-icon aria-hidden="true">{{ product.stockQuantity === 0 ? 'remove_shopping_cart' : 'shopping_cart'
                             }}</mat-icon>
                     </button>
 
