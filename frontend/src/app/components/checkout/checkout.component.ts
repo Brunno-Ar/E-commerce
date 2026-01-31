@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,6 +37,7 @@ export class CheckoutComponent implements OnInit {
     total: number = 0;
     loading = false;
     addressForm: FormGroup;
+    private destroyRef = inject(DestroyRef);
 
     @ViewChild('numberInput') numberInputRef!: ElementRef<HTMLInputElement>;
 
@@ -58,10 +60,12 @@ export class CheckoutComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.cartService.cartItems$.subscribe(items => {
-            this.cartItems = items;
-            this.calculateTotals();
-        });
+        this.cartService.cartItems$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(items => {
+                this.cartItems = items;
+                this.calculateTotals();
+            });
     }
 
     calculateTotals() {
