@@ -3,6 +3,8 @@ package com.bruno.backend.repository;
 import com.bruno.backend.entity.Theme;
 import com.bruno.backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +18,10 @@ public interface ThemeRepository extends JpaRepository<Theme, Long> {
     Optional<Theme> findByThemeKey(String themeKey);
     
     List<Theme> findByIsActiveTrue();
+
+    @Modifying
+    @Query("UPDATE Theme t SET t.isActive = false WHERE t.isActive = true")
+    void deactivateAllThemes();
     
     Optional<Theme> findByIsPublishedTrue();
     

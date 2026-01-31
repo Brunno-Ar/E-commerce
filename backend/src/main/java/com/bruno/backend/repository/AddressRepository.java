@@ -12,13 +12,13 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
     
-    List<Address> findByUserId(Long userId);
+    List<Address> findByUserId(String userId);
     
     List<Address> findByUserAndType(User user, AddressType type);
     
-    Optional<Address> findByUserIdAndIsDefaultTrue(Long userId);
+    Optional<Address> findByUserIdAndIsDefaultTrue(String userId);
     
-    List<Address> findByUserIdAndType(Long userId, AddressType type);
+    List<Address> findByUserIdAndType(String userId, AddressType type);
     
-    void deleteByUserIdAndId(Long userId, Long id);
+    void deleteByUserIdAndId(String userId, Long id);
 }
