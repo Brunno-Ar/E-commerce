@@ -148,14 +148,19 @@ public class OrderService {
      * Restaura o estoque dos produtos quando um pedido é cancelado.
      */
     private void restoreStock(Order order) {
+        List<Product> productsToUpdate = new ArrayList<>();
         for (OrderItem item : order.getItems()) {
             Product product = item.getProduct();
             // Apenas restaura estoque de produtos não-afiliados
             if (!product.isAffiliate()) {
                 int currentStock = product.getStockQuantity() != null ? product.getStockQuantity() : 0;
                 product.setStockQuantity(currentStock + item.getQuantity());
-                productRepository.save(product);
+                productsToUpdate.add(product);
             }
+        }
+
+        if (!productsToUpdate.isEmpty()) {
+            productRepository.saveAll(productsToUpdate);
         }
     }
 }
