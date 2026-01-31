@@ -20,7 +20,7 @@ public class AddressService {
     private final AddressRepository addressRepository;
 
     public List<Address> getUserAddresses(String userId) {
-        return addressRepository.findByUserId(Long.parseLong(userId));
+        return addressRepository.findByUserId(userId);
     }
 
     public Address createAddress(User user, AddressDTO addressDTO) {
@@ -92,7 +92,7 @@ public class AddressService {
     }
 
     public Address getDefaultAddress(String userId, AddressType type) {
-        return addressRepository.findByUserIdAndType(Long.parseLong(userId), type)
+        return addressRepository.findByUserIdAndType(userId, type)
                 .stream()
                 .filter(Address::isDefault)
                 .findFirst()
@@ -100,7 +100,7 @@ public class AddressService {
     }
 
     public List<Address> getAddressesByType(String userId, AddressType type) {
-        return addressRepository.findByUserIdAndType(Long.parseLong(userId), type);
+        return addressRepository.findByUserIdAndType(userId, type);
     }
 
     public AddressDTO toDTO(Address address) {

@@ -79,11 +79,7 @@ public class ThemeService {
                 .orElseThrow(() -> new RuntimeException("Tema não encontrado"));
 
         // Deactivate all other themes
-        themeRepository.findByIsActiveTrue()
-                .forEach(activeTheme -> {
-                    activeTheme.setActive(false);
-                    themeRepository.save(activeTheme);
-                });
+        themeRepository.deactivateAllThemes();
 
         theme.setActive(true);
         theme.setPublished(true);
