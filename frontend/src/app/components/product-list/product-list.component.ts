@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -26,6 +27,7 @@ import { HeroComponent } from '../hero/hero.component';
         MatGridListModule,
         MatChipsModule,
         MatIconModule,
+        MatTooltipModule,
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
