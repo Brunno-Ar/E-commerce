@@ -34,6 +34,7 @@ export class AppComponent {
   title = 'Technoo';
   sidebarOpen = signal(true);
   currentRoute = '';
+  private autoCloseTimer: any;
 
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -72,7 +73,21 @@ export class AppComponent {
   }
 
   toggleSidebar(): void {
+    clearTimeout(this.autoCloseTimer);
     this.sidebarOpen.update(v => !v);
+  }
+
+  onSidebarEnter(): void {
+    clearTimeout(this.autoCloseTimer);
+  }
+
+  onSidebarLeave(): void {
+    // Fecha a sidebar automaticamente após 4 segundos de inatividade
+    this.autoCloseTimer = setTimeout(() => {
+      if (this.sidebarOpen()) {
+        this.sidebarOpen.set(false);
+      }
+    }, 4000);
   }
 
   isActive(route: string): boolean {
