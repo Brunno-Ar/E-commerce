@@ -120,6 +120,10 @@ export class AppComponent {
   }
 
   getPageTitle(): string {
+    if (this.currentRoute.startsWith('/admin/products')) return 'Gerenciar Produtos';
+    if (this.currentRoute.startsWith('/admin/orders')) return 'Gerenciar Pedidos';
+    if (this.currentRoute.startsWith('/admin/categories')) return 'Gerenciar Categorias';
+    if (this.currentRoute.startsWith('/admin/settings')) return 'Configurações da Loja';
     if (this.currentRoute.startsWith('/admin')) return 'Painel Administrativo';
     if (this.currentRoute === '/checkout') return 'Carrinho de Compras';
     if (this.currentRoute === '/login') return 'Login';

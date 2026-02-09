@@ -10,7 +10,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AdminLayoutComponent } from '../admin-layout/admin-layout.component';
 import { AdminService } from '../../services/admin.service';
 import { Category } from '../../models/category.model';
 import { CategoryDialogComponent } from './category-dialog.component';
@@ -30,8 +29,7 @@ import { ConfirmDialogComponent } from './confirm-dialog.component';
         MatFormFieldModule,
         MatDialogModule,
         MatSnackBarModule,
-        MatProgressSpinnerModule,
-        AdminLayoutComponent
+        MatProgressSpinnerModule
     ],
     templateUrl: './admin-categories.component.html',
     styleUrls: ['./admin-categories.component.scss']

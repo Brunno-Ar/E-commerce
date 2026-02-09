@@ -25,7 +25,7 @@
             </div>
 
             <div class="status-actions">
-                <mat-form-field appearance="outline" class="status-selector">
+                <mat-form-field appearance="outline" class="status-selector" subscriptSizing="dynamic">
                     <mat-label>Atualizar Status</mat-label>
                     <mat-select [(ngModel)]="currentStatus" [disabled]="updating()">
                         <mat-option *ngFor="let opt of statusOptions" [value]="opt.value">

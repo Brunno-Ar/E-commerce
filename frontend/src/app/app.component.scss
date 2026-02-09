@@ -2,20 +2,22 @@
 $sidebar-width: 260px;
 $sidebar-collapsed-width: 72px;
 $header-height: 64px;
-$bg-dark: #0f172a;
-$bg-sidebar: #1e293b;
-$bg-card: #1e293b;
-$accent-blue: #3b82f6;
-$accent-indigo: #6366f1;
-$text-primary: #f8fafc;
-$text-secondary: #94a3b8;
-$border-color: #334155;
+$bg-dark: #0f172a; // Slate-950
+$bg-sidebar: #1e293b; // Slate-800
+$accent-blue: #3b82f6; // Blue-500
+$accent-indigo: #6366f1; // Indigo-500
+$text-primary: #f8fafc; // Slate-50
+$text-secondary: #94a3b8; // Slate-400
+$border-color: #334155; // Slate-700
+$active-bg: rgba($accent-blue, 0.15);
+$hover-bg: rgba(255, 255, 255, 0.05);
 
 .app-container {
     display: flex;
     min-height: 100vh;
     background-color: $bg-dark;
     font-family: 'Inter', sans-serif;
+    color: $text-primary;
 }
 
 // Sidebar Styles
@@ -32,12 +34,14 @@ $border-color: #334155;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 100;
     overflow: hidden;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
 
     &.collapsed {
         width: $sidebar-collapsed-width;
 
         .sidebar-header {
             padding: 16px 12px;
+            justify-content: center;
         }
 
         .logo-container {
@@ -47,40 +51,49 @@ $border-color: #334155;
         .nav-item {
             justify-content: center;
             padding: 12px;
+            margin: 4px 12px;
         }
 
         .nav-section {
-            padding: 8px;
+            padding: 8px 0;
         }
     }
 }
 
 .sidebar-header {
-    padding: 20px 16px;
+    height: $header-height;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
     border-bottom: 1px solid $border-color;
+    background: rgba($bg-sidebar, 0.5);
+    backdrop-filter: blur(8px);
 }
 
 .logo-container {
     display: flex;
     align-items: center;
     gap: 12px;
+    width: 100%;
+    overflow: hidden;
 }
 
 .logo-icon {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     background: linear-gradient(135deg, $accent-blue, $accent-indigo);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba($accent-blue, 0.3);
 
     mat-icon {
         color: white;
-        font-size: 22px;
-        width: 22px;
-        height: 22px;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
     }
 }
 
@@ -89,85 +102,126 @@ $border-color: #334155;
     flex-direction: column;
     overflow: hidden;
     white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.2s ease;
 }
 
 .brand-name {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     color: $text-primary;
+    letter-spacing: -0.5px;
 }
 
 .brand-subtitle {
     font-size: 11px;
     color: $text-secondary;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    font-weight: 600;
 }
 
 .nav-section {
-    padding: 12px;
+    padding: 24px 12px;
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    overflow-y: auto;
+
+    // Scrollbar styling
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: $border-color;
+        border-radius: 4px;
+    }
 
     &.account-section {
         flex: 0;
         border-top: 1px solid $border-color;
         padding-top: 16px;
         margin-top: auto;
+        background: rgba(0, 0, 0, 0.1);
     }
 }
 
 .nav-label {
     font-size: 11px;
-    font-weight: 600;
-    color: $text-secondary;
+    font-weight: 700;
+    color: darken($text-secondary, 10%);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
     padding: 8px 12px;
     margin-bottom: 4px;
+    opacity: 0.8;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 16px;
+    padding: 10px 16px;
+    margin: 2px 0;
     border-radius: 8px;
     border: none;
     background: transparent;
     color: $text-secondary;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
     text-align: left;
     font-size: 14px;
     font-weight: 500;
-    text-decoration: none; // Ensure links don't have underline
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
-        background: rgba($accent-blue, 0.1);
+        background: $hover-bg;
         color: $text-primary;
+        transform: translateX(4px);
 
         .nav-icon {
-            color: $accent-blue;
+            color: lighten($text-secondary, 20%);
         }
     }
 
     &.active {
-        background: rgba($accent-blue, 0.15);
+        background: linear-gradient(90deg, rgba($accent-blue, 0.15), rgba($accent-blue, 0.05));
         color: $accent-blue;
-        border-left: 3px solid $accent-blue;
+        font-weight: 600;
+
+        // Active indicator line
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 20px;
+            width: 3px;
+            background: $accent-blue;
+            border-radius: 0 4px 4px 0;
+        }
 
         .nav-icon {
             color: $accent-blue;
         }
     }
 
-    &.logout:hover {
-        background: rgba(#ef4444, 0.15);
-        color: #ef4444;
+    &.logout {
+        color: #ef4444; // Red-500
+
+        &:hover {
+            background: rgba(#ef4444, 0.1);
+            color: #f87171; // Red-400
+
+            .nav-icon {
+                color: #f87171;
+            }
+        }
 
         .nav-icon {
             color: #ef4444;
@@ -180,21 +234,26 @@ $border-color: #334155;
     width: 20px;
     height: 20px;
     flex-shrink: 0;
+    transition: color 0.2s ease;
 }
 
 .nav-label-text {
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nav-badge {
     background: #ef4444;
     color: white;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 12px;
+    min-width: 18px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(#ef4444, 0.3);
 }
 
 .toggle-btn {
@@ -202,7 +261,8 @@ $border-color: #334155;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 16px;
+    height: 48px;
+    width: 100%;
     border: none;
     background: transparent;
     color: $text-secondary;
@@ -210,14 +270,15 @@ $border-color: #334155;
     border-top: 1px solid $border-color;
     transition: all 0.2s ease;
     font-size: 13px;
+    font-weight: 500;
 
     &:hover {
-        background: rgba($accent-blue, 0.1);
+        background: $hover-bg;
         color: $text-primary;
     }
 
     mat-icon {
-        transition: transform 0.3s ease;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
         &.rotated {
             transform: rotate(180deg);
@@ -233,28 +294,22 @@ $border-color: #334155;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: $bg-dark;
 
     .sidebar.collapsed ~ & {
         margin-left: $sidebar-collapsed-width;
     }
 }
 
-// Responsive: Overlay sidebar on mobile if needed (simplified for now)
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-        &.open { transform: translateX(0); }
-    }
-    .main-content { margin-left: 0 !important; }
-}
-
+// Top Header
 .top-header {
     height: $header-height;
-    padding: 0 24px;
+    padding: 0 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: $bg-sidebar;
+    background: rgba($bg-dark, 0.8);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid $border-color;
     position: sticky;
     top: 0;
@@ -267,36 +322,98 @@ $border-color: #334155;
         font-weight: 600;
         color: $text-primary;
         margin: 0;
+        letter-spacing: -0.5px;
     }
 }
 
 .header-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 8px;
+    gap: 10px;
+    padding: 6px 14px;
+    border-radius: 20px;
     background: rgba($accent-blue, 0.1);
     color: $text-primary;
+    border: 1px solid rgba($accent-blue, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba($accent-blue, 0.2);
+        border-color: rgba($accent-blue, 0.4);
+    }
 
     mat-icon {
         color: $accent-blue;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
     }
 
     .user-name {
-        font-size: 14px;
-        font-weight: 500;
+        font-size: 13px;
+        font-weight: 600;
     }
 }
 
 .page-content {
     flex: 1;
-    padding: 24px;
+    padding: 32px;
     overflow-y: auto;
+
+    // Custom Scrollbar
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: $bg-dark;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: $border-color;
+        border-radius: 4px;
+        &:hover {
+            background: lighten($border-color, 10%);
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .sidebar {
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+
+        // Ensure sidebar is always on top on mobile
+        z-index: 1000;
+    }
+
+    // On mobile, we keep the sidebar functionality (collapsed/expanded)
+    // relying on the existing collapsed state logic.
+    // Ideally, we would have a full overlay mode, but this preserves
+    // accessibility to the toggle button.
+
+    .main-content {
+        // On mobile, content always takes full width minus the collapsed sidebar width
+        // (if we want to keep it visible) or we can overlay.
+        // For this fix, let's allow the sidebar to overlay the content when open.
+        margin-left: $sidebar-collapsed-width !important;
+    }
+
+    .sidebar:not(.collapsed) {
+        // When open on mobile, it overlays
+        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    }
+
+    .top-header {
+        padding: 0 16px;
+    }
+
+    .page-content {
+        padding: 16px;
+    }
 }

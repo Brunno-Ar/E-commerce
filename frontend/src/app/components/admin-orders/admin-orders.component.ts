@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AdminLayoutComponent } from '../admin-layout/admin-layout.component';
 import { AdminService, Order, ORDER_STATUS_OPTIONS } from '../../services/admin.service';
 import { OrderDetailsDialogComponent } from './order-details-dialog.component';
 
@@ -22,8 +21,7 @@ import { OrderDetailsDialogComponent } from './order-details-dialog.component';
         MatIconModule,
         MatChipsModule,
         MatProgressSpinnerModule,
-        MatDialogModule,
-        AdminLayoutComponent
+        MatDialogModule
     ],
     templateUrl: './admin-orders.component.html',
     styleUrls: ['./admin-orders.component.scss']
