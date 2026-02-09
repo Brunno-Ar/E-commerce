@@ -26,7 +26,7 @@
     </div>
 
     <div class="product-grid">
-        <mat-card *ngFor="let product of products$ | async" class="product-card">
+        <mat-card *ngFor="let product of products" class="product-card">
             <div class="card-image-wrapper">
                 <span class="badge">NEW</span>
                 <img mat-card-image [src]="product.imageUrl" [alt]="product.name">
@@ -66,5 +66,13 @@
                 </div>
             </mat-card-content>
         </mat-card>
+    </div>
+
+    <div class="load-more-container" *ngIf="!isLastPage">
+        <button mat-stroked-button color="primary" (click)="loadMore()" [disabled]="isLoading">
+            <mat-icon *ngIf="!isLoading">expand_more</mat-icon>
+            <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+            {{ isLoading ? 'Loading...' : 'Load More Products' }}
+        </button>
     </div>
 </div>

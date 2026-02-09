@@ -39,9 +39,9 @@ export class AdminProductsComponent implements OnInit {
 
     loadProducts(): void {
         this.loading.set(true);
-        this.ecommerceService.getProducts().subscribe({
-            next: (products) => {
-                this.products.set(products);
+        this.ecommerceService.getProducts(undefined, undefined, 0, 1000).subscribe({
+            next: (page) => {
+                this.products.set(page.content);
                 this.loading.set(false);
             },
             error: (err) => {

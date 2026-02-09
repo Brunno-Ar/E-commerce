@@ -3,6 +3,8 @@ package com.bruno.backend.controller;
 import com.bruno.backend.entity.Product;
 import com.bruno.backend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,13 +20,14 @@ public class ProductController {
     private final ProductRepository productRepository;
 
     @GetMapping
-    public List<Product> getAll(
+    public Page<Product> getAll(
             @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) String query) {
+            @RequestParam(required = false) String query,
+            Pageable pageable) {
         if (categoryId == null && query == null) {
-            return productRepository.findAll();
+            return productRepository.findAll(pageable);
         }
-        return productRepository.search(categoryId, query);
+        return productRepository.search(categoryId, query, pageable);
     }
 
     @GetMapping("/{id}")
@@ -35,8 +38,8 @@ public class ProductController {
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<Product> getByCategoryId(@PathVariable Long categoryId) {
-        return productRepository.findByCategoryId(categoryId);
+    public Page<Product> getByCategoryId(@PathVariable Long categoryId, Pageable pageable) {
+        return productRepository.findByCategoryId(categoryId, pageable);
     }
 
     @PostMapping

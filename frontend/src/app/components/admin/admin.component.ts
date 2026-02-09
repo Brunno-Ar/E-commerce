@@ -41,9 +41,9 @@ export class AdminComponent implements OnInit {
     }
 
     loadProducts() {
-        this.ecommerceService.getProducts().subscribe({
+        this.ecommerceService.getProducts(undefined, undefined, 0, 1000).subscribe({
             next: (data) => {
-                this.dataSource.data = data;
+                this.dataSource.data = data.content;
             },
             error: (err) => console.error(err)
         });

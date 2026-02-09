@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
 import { Category } from '../models/category.model';
+import { Page } from '../models/page.model';
 
 import { environment } from '../../environments/environment';
 import { SiteConfig } from '../models/site-config.model';
@@ -20,15 +21,18 @@ export class EcommerceService {
     private apiUrl = environment.apiUrl;
     private http = inject(HttpClient);
 
-    getProducts(categoryId?: number, search?: string): Observable<Product[]> {
-        let params = new HttpParams();
+    getProducts(categoryId?: number, search?: string, page: number = 0, size: number = 10): Observable<Page<Product>> {
+        let params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+
         if (categoryId) {
             params = params.set('categoryId', categoryId);
         }
         if (search) {
             params = params.set('query', search);
         }
-        return this.http.get<Product[]>(`${this.apiUrl}/products`, { params });
+        return this.http.get<Page<Product>>(`${this.apiUrl}/products`, { params });
     }
 
     getProductById(id: number): Observable<Product> {
@@ -39,8 +43,11 @@ export class EcommerceService {
         return this.http.get<Category[]>(`${this.apiUrl}/categories`);
     }
 
-    getProductsByCategory(categoryId: number): Observable<Product[]> {
-        return this.http.get<Product[]>(`${this.apiUrl}/products/category/${categoryId}`);
+    getProductsByCategory(categoryId: number, page: number = 0, size: number = 10): Observable<Page<Product>> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        return this.http.get<Page<Product>>(`${this.apiUrl}/products/category/${categoryId}`, { params });
     }
 
     getMyOrders(): Observable<Order[]> {
