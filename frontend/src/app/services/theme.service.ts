@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Theme } from '../models/theme.model';
 import { ThemeSettingsDTO } from '../models/theme-settings.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 export class ThemeService {
   private apiUrl = `${environment.apiUrl}/api/themes`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllThemes(): Observable<Theme[]> {
     return this.http.get<Theme[]>(this.apiUrl);

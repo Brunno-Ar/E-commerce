@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AddressDTO } from '../models/address.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 export class AddressService {
   private apiUrl = `${environment.apiUrl}/api/addresses`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getUserAddresses(): Observable<AddressDTO[]> {
     return this.http.get<AddressDTO[]>(this.apiUrl);

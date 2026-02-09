@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlatformComparisonDTO } from '../models/platform-comparison.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 export class AffiliateService {
   private apiUrl = `${environment.apiUrl}/api/affiliate`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   compareProductPrices(productId: number): Observable<PlatformComparisonDTO[]> {
     return this.http.get<PlatformComparisonDTO[]>(`${this.apiUrl}/compare/${productId}`);
