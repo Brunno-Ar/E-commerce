@@ -79,13 +79,12 @@ public class CategoryController {
         return categoryRepository.findById(id)
                 .map(category -> {
                     // Verifica se existem produtos vinculados
-                    var productsInCategory = productRepository.findByCategoryId(id);
-                    if (!productsInCategory.isEmpty()) {
+                    if (productRepository.existsByCategoryId(id)) {
                         return ResponseEntity
                                 .status(HttpStatus.CONFLICT)
                                 .body(Map.of(
                                         "error", "Não é possível deletar esta categoria",
-                                        "reason", "Existem " + productsInCategory.size() + " produto(s) vinculado(s)",
+                                        "reason", "Existem produto(s) vinculado(s)",
                                         "hint", "Remova ou reatribua os produtos antes de deletar a categoria"));
                     }
                     categoryRepository.delete(category);
