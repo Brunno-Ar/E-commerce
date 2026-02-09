@@ -2,9 +2,11 @@ package com.bruno.backend.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "order_items")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class OrderItem {
 
     @Id

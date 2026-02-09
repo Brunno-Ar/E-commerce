@@ -8,18 +8,21 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "users")
 @Entity(name = "users")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,10 +31,10 @@ public class User implements UserDetails {
     // Basic info
     @Column(name = "first_name")
     private String firstName;
-    
+
     @Column(name = "last_name")
     private String lastName;
-    
+
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -39,12 +42,12 @@ public class User implements UserDetails {
 
     // Additional personal info
     private String phone;
-    
+
     @Column(name = "birth_date")
     private LocalDate birthDate;
-    
+
     private String gender;
-    
+
     @Column(name = "tax_id")
     private String taxId; // CPF
 
@@ -59,24 +62,27 @@ public class User implements UserDetails {
     // Marketing preferences
     @Column(name = "newsletter_opt_in")
     private boolean newsletterOptIn = false;
-    
+
     @Column(name = "sms_opt_in")
     private boolean smsOptIn = false;
 
     // Relationships
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Address> addresses = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PaymentMethod> paymentMethods = new ArrayList<>();
 
     // Timestamps
     @Column(name = "created_at")
     private LocalDate createdAt;
-    
+
     @Column(name = "updated_at")
     private LocalDate updatedAt;
 
