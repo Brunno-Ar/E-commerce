@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.bruno.backend.repository.UserRepository;
 import com.bruno.backend.entity.User;
@@ -60,6 +62,7 @@ public class OrderService {
 
         List<OrderItem> items = new ArrayList<>();
         BigDecimal totalValue = BigDecimal.ZERO;
+        Set<Product> productsToUpdate = new HashSet<>();
 
         if (dto.getItems() != null) {
             for (OrderDTO.OrderItemDTO itemDto : dto.getItems()) {
@@ -75,7 +78,7 @@ public class OrderService {
                     }
                     // Decrementa o estoque
                     product.setStockQuantity(currentStock - itemDto.getQuantity());
-                    productRepository.save(product);
+                    productsToUpdate.add(product);
                 }
 
                 BigDecimal price = product.getPrice();
@@ -86,6 +89,10 @@ public class OrderService {
                 OrderItem orderItem = new OrderItem(order, product, itemDto.getQuantity(), price);
                 items.add(orderItem);
             }
+        }
+
+        if (!productsToUpdate.isEmpty()) {
+            productRepository.saveAll(productsToUpdate);
         }
 
         order.setItems(items);
