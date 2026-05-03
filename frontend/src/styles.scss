@@ -91,6 +91,22 @@ body {
     color: white;
 }
 
+// Global overrides for Material Form Fields to ensure consistent dark mode appearance
+.mat-mdc-form-field {
+    --mdc-outlined-input-text-color: white;
+    --mdc-outlined-label-text-color: #94a3b8;
+    --mat-mdc-form-field-floating-label-text-color: #94a3b8;
+
+    .mat-mdc-text-field-wrapper {
+        background-color: #0f172a;
+    }
+
+    // Ensure the input text is white even without the variable
+    .mat-mdc-input-element {
+        color: white;
+    }
+}
+
 // Scrollbar styling (optional but nice for dark mode)
 ::-webkit-scrollbar {
     width: 10px;
