@@ -27,25 +27,20 @@ public class CheckoutController {
 
     @PostMapping("/process")
     public ResponseEntity<Map<String, String>> processCheckout(@RequestBody OrderDTO orderDTO) {
-        // 1. Salvar o Pedido (com endereço e usuário vinculado)
         Long orderId = orderService.createOrder(orderDTO);
 
-        // 2. Recuperar o pedido salvo para garantir dados confiáveis (preço, nome)
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        // 3. Converter para DTO do Pagamento
         List<CartItemDTO> cartItems = order.getItems().stream().map(item -> {
             CartItemDTO dto = new CartItemDTO();
             dto.setProductId(item.getProduct().getId());
             dto.setTitle(item.getProduct().getName());
             dto.setQuantity(item.getQuantity());
             dto.setPrice(item.getPriceAtPurchase());
-            dto.setAffiliate(item.getProduct().isAffiliate()); // Assumindo getter
             return dto;
         }).toList();
 
-        // 4. Gerar Link de Pagamento
         String paymentUrl = paymentService.createPreference(cartItems);
 
         return ResponseEntity.ok(Map.of("url", paymentUrl));

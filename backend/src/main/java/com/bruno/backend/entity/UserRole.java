@@ -1,7 +1,6 @@
 package com.bruno.backend.entity;
 
 public enum UserRole {
-    ADMIN("admin"),
     USER("user");
 
     private String role;

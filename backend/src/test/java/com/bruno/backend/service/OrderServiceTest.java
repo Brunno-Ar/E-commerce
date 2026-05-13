@@ -43,14 +43,12 @@ class OrderServiceTest {
     void setUp() {
         product1 = new Product();
         product1.setId(1L);
-        product1.setAffiliate(false);
         product1.setStockQuantity(10);
         product1.setName("Product 1");
         product1.setPrice(java.math.BigDecimal.TEN);
 
         product2 = new Product();
         product2.setId(2L);
-        product2.setAffiliate(false);
         product2.setStockQuantity(5);
         product2.setName("Product 2");
         product2.setPrice(java.math.BigDecimal.TEN);

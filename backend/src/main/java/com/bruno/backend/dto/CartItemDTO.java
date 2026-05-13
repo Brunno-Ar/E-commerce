@@ -13,5 +13,4 @@ public class CartItemDTO {
     private String title;
     private int quantity;
     private BigDecimal price;
-    private boolean isAffiliate;
 }

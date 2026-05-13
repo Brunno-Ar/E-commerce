@@ -23,11 +23,6 @@ public class PaymentService {
                     .setAccessToken("APP_USR-6431088389161370-012402-36483e989dce21fae1f9f2fdf73dd8be-2907827076");
             List<PreferenceItemRequest> items = new ArrayList<>();
             for (CartItemDTO item : cartItems) {
-                // Security Rule: Filter affiliate items
-                if (item.isAffiliate()) {
-                    continue;
-                }
-
                 PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
                         .title(item.getTitle())
                         .quantity(item.getQuantity())

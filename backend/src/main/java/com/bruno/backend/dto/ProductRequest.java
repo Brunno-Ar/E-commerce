@@ -7,7 +7,6 @@ public record ProductRequest(
         String description,
         BigDecimal price,
         String imageUrl,
-        Long categoryId,
-        String affiliateUrl,
-        Boolean isAffiliate) {
+        Integer stockQuantity,
+        Long categoryId) {
 }
