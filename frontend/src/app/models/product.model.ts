@@ -8,7 +8,5 @@ export interface Product {
     imageUrl: string;
     categoryId?: number;
     category?: Category;
-    isAffiliate?: boolean;
-    affiliateUrl?: string;
     stockQuantity?: number;
 }

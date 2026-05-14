@@ -5,12 +5,12 @@
         <div class="sidebar-header">
             <div class="logo-container">
                 <div class="logo-icon">
-                    <mat-icon>{{ isAdmin() ? 'admin_panel_settings' : 'store' }}</mat-icon>
+                    <mat-icon>store</mat-icon>
                 </div>
                 @if (sidebarOpen()) {
                 <div class="logo-text">
                     <span class="brand-name">Technoo</span>
-                    <span class="brand-subtitle">{{ isAdmin() ? 'Admin Panel' : 'Store' }}</span>
+                    <span class="brand-subtitle">Store</span>
                 </div>
                 }
             </div>

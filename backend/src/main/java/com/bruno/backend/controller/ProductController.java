@@ -42,30 +42,4 @@ public class ProductController {
         return productRepository.findByCategoryId(categoryId, pageable);
     }
 
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public Product create(@RequestBody Product product) {
-        return productRepository.save(product);
-    }
-
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
-        return productRepository.findById(id)
-                .map(existing -> {
-                    product.setId(existing.getId());
-                    return ResponseEntity.ok(productRepository.save(product));
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (productRepository.existsById(id)) {
-            productRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
 }
