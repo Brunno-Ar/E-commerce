@@ -15,16 +15,13 @@ export class CartService {
     private snackBar = inject(MatSnackBar);
 
     constructor() {
-        // Initial load
         this.loadCart();
 
-        // Reactively reload cart when user changes (login/logout)
         effect(() => {
             const user = this.authService.currentUser();
             this.loadCart();
         });
 
-        // Listen to storage events to sync across tabs
         window.addEventListener('storage', () => this.loadCart());
     }
 
@@ -58,15 +55,12 @@ export class CartService {
         const currentItems = this.cartItemsSubject.value;
         const existingItem = currentItems.find(item => item.product.id === product.id);
 
-        // Verificação de estoque (apenas para produtos não-afiliados)
-        if (!product.isAffiliate) {
-            const stockQuantity = product.stockQuantity ?? 0;
-            const currentQuantityInCart = existingItem ? existingItem.quantity : 0;
+        const stockQuantity = product.stockQuantity ?? 0;
+        const currentQuantityInCart = existingItem ? existingItem.quantity : 0;
 
-            if (currentQuantityInCart + 1 > stockQuantity) {
-                this.showSnackBarError(`Limite de estoque atingido para "${product.name}". Disponível: ${stockQuantity}`);
-                return;
-            }
+        if (currentQuantityInCart + 1 > stockQuantity) {
+            this.showSnackBarError(`Limite de estoque atingido para "${product.name}". Disponível: ${stockQuantity}`);
+            return;
         }
 
         let updatedItems;

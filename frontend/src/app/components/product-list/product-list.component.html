@@ -37,7 +37,7 @@
                 <p class="description">{{ product.description }}</p>
 
                 <!-- Alerta de Escassez -->
-                <div class="stock-alert" *ngIf="!product.isAffiliate && product.stockQuantity !== undefined">
+                <div class="stock-alert" *ngIf="product.stockQuantity !== undefined">
                     <span class="low-stock" *ngIf="product.stockQuantity > 0 && product.stockQuantity < 5">
                         🔥 Restam apenas {{ product.stockQuantity }} unidades!
                     </span>
@@ -49,19 +49,12 @@
                 <div class="card-footer">
                     <span class="price-tag">{{ product.price | currency:'BRL' }}</span>
 
-                    <!-- Botão de Compra (Produtos Nativos) -->
-                    <button *ngIf="!product.isAffiliate" mat-icon-button
+                    <!-- Botão de Compra -->
+                    <button mat-icon-button
                         [ngClass]="{'add-btn': product.stockQuantity !== 0, 'add-btn-disabled': product.stockQuantity === 0}"
                         [disabled]="product.stockQuantity === 0" (click)="addToCart(product)">
                         <mat-icon>{{ product.stockQuantity === 0 ? 'remove_shopping_cart' : 'shopping_cart'
                             }}</mat-icon>
-                    </button>
-
-                    <!-- Botão de Afiliado -->
-                    <button *ngIf="product.isAffiliate" mat-flat-button color="accent" class="add-btn affiliate-btn"
-                        (click)="openAffiliateLink(product.affiliateUrl)">
-                        <mat-icon>open_in_new</mat-icon>
-                        <span class="btn-label">Ir para Loja</span>
                     </button>
                 </div>
             </mat-card-content>

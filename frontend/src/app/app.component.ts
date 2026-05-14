@@ -39,17 +39,9 @@ export class AppComponent {
   private router = inject(Router);
   public cartService = inject(CartService);
 
-  // Menus definidos dinamicamente
-  adminItems: NavItem[] = [
-    { icon: 'dashboard', label: 'Dashboard', route: '/admin' },
-    { icon: 'inventory_2', label: 'Produtos', route: '/admin/products' },
-    { icon: 'shopping_cart', label: 'Pedidos', route: '/admin/orders' },
-    { icon: 'settings', label: 'Configurar Loja', route: '/admin/settings' }
-  ];
-
   storeItems: NavItem[] = [
     { icon: 'storefront', label: 'Loja', route: '/' },
-    { icon: 'shopping_bag', label: 'Carrinho', route: '/checkout' } // Badge será atualizado dinamicamente
+    { icon: 'shopping_bag', label: 'Carrinho', route: '/checkout' }
   ];
 
   accountItems: NavItem[] = [
@@ -63,7 +55,6 @@ export class AppComponent {
   ];
 
   constructor() {
-    // Escuta mudanças de rota para destacar link ativo
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event) => {
@@ -88,12 +79,7 @@ export class AppComponent {
     }
   }
 
-  // Retorna os itens principais baseado no role
   getMainNavItems(): NavItem[] {
-    if (this.isAdmin()) {
-      return [...this.adminItems, ...this.storeItems];
-    }
-    // Atualiza badge do carrinho
     const cartCount = this.cartService.getCount();
     const store = this.storeItems.map(item => {
       if (item.route === '/checkout') return { ...item, badge: cartCount > 0 ? cartCount : undefined };
@@ -102,7 +88,6 @@ export class AppComponent {
     return store;
   }
 
-  // Retorna itens de conta
   getAccountItems(): NavItem[] {
     if (this.authService.currentUser()) {
       return this.loggedInItems;
@@ -115,16 +100,7 @@ export class AppComponent {
     return user?.name || 'Visitante';
   }
 
-  isAdmin(): boolean {
-    return this.authService.isAdmin();
-  }
-
   getPageTitle(): string {
-    if (this.currentRoute.startsWith('/admin/products')) return 'Gerenciar Produtos';
-    if (this.currentRoute.startsWith('/admin/orders')) return 'Gerenciar Pedidos';
-    if (this.currentRoute.startsWith('/admin/categories')) return 'Gerenciar Categorias';
-    if (this.currentRoute.startsWith('/admin/settings')) return 'Configurações da Loja';
-    if (this.currentRoute.startsWith('/admin')) return 'Painel Administrativo';
     if (this.currentRoute === '/checkout') return 'Carrinho de Compras';
     if (this.currentRoute === '/login') return 'Login';
     if (this.currentRoute === '/register') return 'Cadastro';

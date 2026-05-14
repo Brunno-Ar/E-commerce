@@ -25,7 +25,7 @@ import { CartService } from '../../services/cart.service';
                 <h1>Pagamento Aprovado!</h1>
                 <p>Seu pedido foi confirmado com sucesso. Obrigado por comprar na Technoo.</p>
                 <div class="actions">
-                    <button mat-raised-button color="primary" routerLink="/admin/orders">Ver Meus Pedidos</button>
+                    <button mat-raised-button color="primary" routerLink="/my-orders">Ver Meus Pedidos</button>
                     <button mat-stroked-button routerLink="/">Continuar Comprando</button>
                 </div>
             </div>

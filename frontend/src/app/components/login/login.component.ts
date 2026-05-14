@@ -52,13 +52,8 @@ export class LoginComponent {
             this.errorMessage.set('');
             const { email, password } = this.loginForm.value;
             this.authService.login(email, password).subscribe({
-                next: (response) => {
-                    // Redireciona admins para o dashboard, usuários para a loja
-                    if (response.role === 'ADMIN') {
-                        this.router.navigate(['/admin']);
-                    } else {
-                        this.router.navigate(['/']);
-                    }
+                next: () => {
+                    this.router.navigate(['/']);
                 },
                 error: (err) => {
                     console.error('Login error', err);

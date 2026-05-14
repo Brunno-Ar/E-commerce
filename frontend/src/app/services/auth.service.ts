@@ -18,7 +18,6 @@ export class AuthService {
     private http = inject(HttpClient);
     private router = inject(Router);
 
-    // Reactive state
     currentUser = signal<{ name: string; email: string; role: string } | null>(this.getUserFromStorage());
 
     constructor() { }
@@ -62,11 +61,6 @@ export class AuthService {
 
     isAuthenticated(): boolean {
         return !!localStorage.getItem('token');
-    }
-
-    isAdmin(): boolean {
-        const user = this.currentUser();
-        return user?.role === 'ADMIN';
     }
 
     getUserEmail(): string | null {

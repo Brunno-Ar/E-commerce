@@ -112,10 +112,4 @@ export class ProductListComponent {
     addToCart(product: Product) {
         this.cartService.addToCart(product);
     }
-
-    openAffiliateLink(url?: string) {
-        if (url) {
-            window.open(url, '_blank');
-        }
-    }
 }
